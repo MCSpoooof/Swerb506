@@ -1,0 +1,26 @@
+package org.firstinspires.ftc.teamcode.Swerb506.opmode.test;
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.teamcode.common.hardware.Globals;
+import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
+@TeleOp(name = "CameraTest")
+//@Disabled
+@Config
+public class CameraTest extends LinearOpMode {
+    private final RobotHardware robot = RobotHardware.getInstance();
+    @Override
+    public void runOpMode() {
+        Globals.AUTO = true;
+        Globals.SIDE = Globals.Side.LEFT;
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+        robot.init(hardwareMap, telemetry);
+        FtcDashboard.getInstance().startCameraStream(robot.backCamera, 30);
+        waitForStart();
+        while (opModeIsActive());
+        robot.stopCameraStream();}}
