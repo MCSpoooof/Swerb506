@@ -24,14 +24,14 @@ import java.util.Locale;
 
 @Config
 public class SwerveModule {
-    public static double P = 0.6, I = 0, D = 0.1;
-    public static double K_STATIC = 0.03;
+    public static double P = 0, I = 0, D = 0;
+    public static double K_STATIC = 0.;
 
     public static double MAX_SERVO = 1, MAX_MOTOR = 1;
 
     public static boolean MOTOR_FLIPPING = true;
 
-    public static double WHEEL_RADIUS = 1.4; // in
+    public static double WHEEL_RADIUS = 30/25.4; // in
     public static double GEAR_RATIO = 1 / (3.5 * 1.5 * 2); // output (wheel) speed / input (motor) speed
     public static final double TICKS_PER_REV = 28;
 
