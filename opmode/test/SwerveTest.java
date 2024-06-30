@@ -11,7 +11,6 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
 @Config
-@Disabled
 @TeleOp(name = "SwerveTest")
 public class SwerveTest extends OpMode {
     public DcMotorEx frontLeftMotor;
