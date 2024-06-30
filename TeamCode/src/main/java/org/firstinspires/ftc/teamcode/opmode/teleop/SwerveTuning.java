@@ -42,6 +42,7 @@ public class SwerveTuning extends RobotHardware {
         OFFSET,
         ANGLE_PID,
         DRIVE_PID,
+        SINGLE_ANGLE_PID,
         kStatic
     }
     private AbsoluteEncoder frontLeft, frontRight, backLeft, backRight;
@@ -123,6 +124,39 @@ public class SwerveTuning extends RobotHardware {
                 swerveDrive.drive(new Translation2d(xVelocity$, yVelocity$), angVelocity$, false, true);
                 telemetry.addData("Index", index);
                 break;
+
+            case SINGLE_ANGLE_PID:
+                ContinuousServo servo;
+                switch (angleWheel) {
+                    case FRONT_LEFT:
+                        servo = RobotConfiguration.ANGLE_FRONT_LEFT.getAsContinuousServo();
+                        break;
+                    case FRONT_RIGHT:
+                        servo = RobotConfiguration.ANGLE_FRONT_RIGHT.getAsContinuousServo();
+                        break;
+                    case BACK_LEFT:
+                        servo = RobotConfiguration.ANGLE_BACK_LEFT.getAsContinuousServo();
+                        break;
+                    default:
+                        servo = RobotConfiguration.ANGLE_BACK_RIGHT.getAsContinuousServo();
+                }
+                servo.configurePIDF(aP, aI, aD);
+
+                if(reverse) {
+                    if(changeDirection.seconds() > changeDirectionTime) {
+                        changeDirection.reset();
+                        reverse = false;
+                    }
+                    servo.setReference(angleSetpointStart, aFF);
+                } else {
+                    if(changeDirection.seconds() > changeDirectionTime) {
+                        changeDirection.reset();
+                        reverse = true;
+                    }
+                    servo.setReference(angleSetpointEnd, aFF);
+                }
+                break;
+
             case kStatic:
                 ContinuousServo s;
                 switch (angleWheel) {
