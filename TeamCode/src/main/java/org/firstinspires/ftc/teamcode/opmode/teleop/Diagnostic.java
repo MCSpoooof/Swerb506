@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.teleop;
+/*package org.firstinspires.ftc.teamcode.opmode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -42,4 +42,4 @@ public class Diagnostic extends Manual {
         }
         
     }
-}
+}*/

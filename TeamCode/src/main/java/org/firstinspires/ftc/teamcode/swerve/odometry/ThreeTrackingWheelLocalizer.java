@@ -19,9 +19,9 @@ public class ThreeTrackingWheelLocalizer extends com.acmerobotics.roadrunner.loc
     public static double LATERAL_DISTANCE = 13.72; // in; distance between the left and right wheels
     public static double FORWARD_OFFSET = 0.0; // in; offset of the lateral wheel
 
-    private final Encoder leftEncoder, rightEncoder, frontEncoder;
-    public static double X_MULTIPLIER = 0.9304872451; // Multiplier in the X direction
-    public static double Y_MULTIPLIER = 0.9318336001; // Multiplier in the Y direction
+    private final Encoder leftEncoder, rightEncoder;
+    public static double X_MULTIPLIER = 1.0; // Multiplier in the X direction
+    public static double Y_MULTIPLIER = 1.0; // Multiplier in the Y direction
 
     public ThreeTrackingWheelLocalizer() {
         super(Arrays.asList(
@@ -30,9 +30,8 @@ public class ThreeTrackingWheelLocalizer extends com.acmerobotics.roadrunner.loc
                 new Pose2d(FORWARD_OFFSET, 0, Math.toRadians(90)) // front
         ));
 
-        leftEncoder = RobotConfiguration.ODOMETRY_PARALLEL_LEFT.getAsEncoder();
-        frontEncoder = RobotConfiguration.ODOMETRY_PERPENDICULAR.getAsEncoder();
-        rightEncoder = RobotConfiguration.ODOMETRY_PARALLEL_RIGHT.getAsEncoder();
+        leftEncoder = RobotConfiguration.ODOMETRY_PARALLEL.getAsEncoder();
+        rightEncoder = RobotConfiguration.ODOMETRY_PERPENDICULAR.getAsEncoder();
     }
 
     public static double encoderTicksToInches(double ticks) {
@@ -45,7 +44,7 @@ public class ThreeTrackingWheelLocalizer extends com.acmerobotics.roadrunner.loc
         return Arrays.asList(
                 encoderTicksToInches(leftEncoder.getCurrentPosition()) * X_MULTIPLIER,
                 encoderTicksToInches(rightEncoder.getCurrentPosition()) * X_MULTIPLIER,
-                encoderTicksToInches(frontEncoder.getCurrentPosition()) * Y_MULTIPLIER
+                encoderTicksToInches(rightEncoder.getCurrentPosition()) * Y_MULTIPLIER
         );
 
     }
@@ -59,7 +58,7 @@ public class ThreeTrackingWheelLocalizer extends com.acmerobotics.roadrunner.loc
         return Arrays.asList(
                 encoderTicksToInches(leftEncoder.getCorrectedVelocity()) * X_MULTIPLIER,
                 encoderTicksToInches(rightEncoder.getCorrectedVelocity()) * X_MULTIPLIER,
-                encoderTicksToInches(frontEncoder.getCorrectedVelocity()) * Y_MULTIPLIER
+                encoderTicksToInches(rightEncoder.getCorrectedVelocity()) * Y_MULTIPLIER
         );
     }
 }

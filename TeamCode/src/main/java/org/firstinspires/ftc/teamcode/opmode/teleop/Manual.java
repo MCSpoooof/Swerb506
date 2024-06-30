@@ -1,11 +1,10 @@
-package org.firstinspires.ftc.teamcode.opmode.teleop;
+/*package org.firstinspires.ftc.teamcode.opmode.teleop;
 
 import static org.firstinspires.ftc.teamcode.core.RobotConstants.DEADZONE;
 import static org.firstinspires.ftc.teamcode.core.RobotConstants.INTAKE_SPEED;
 import static org.firstinspires.ftc.teamcode.core.RobotConstants.IntakePosition;
 import static org.firstinspires.ftc.teamcode.core.RobotConstants.OUTTAKE_SPEED;
 import static org.firstinspires.ftc.teamcode.core.RobotConstants.WRIST_CENTER;
-import static org.firstinspires.ftc.teamcode.opmode.autonomous.SlidePIDTest.kG;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.control.PIDFController;
@@ -337,4 +336,4 @@ public class Manual extends RobotHardware {
             }
         }
     }
-}
+}*/

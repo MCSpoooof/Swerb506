@@ -4,7 +4,7 @@ import org.firstinspires.ftc.teamcode.core.RobotConstants;
 import org.firstinspires.ftc.teamcode.hardware.AbsoluteEncoder;
 import org.firstinspires.ftc.teamcode.hardware.ContinuousServo;
 import org.firstinspires.ftc.teamcode.hardware.Motor;
-import org.firstinspires.ftc.teamcode.opmode.teleop.Manual;
+//import org.firstinspires.ftc.teamcode.opmode.teleop.Manual;
 import org.firstinspires.ftc.teamcode.swerve.configuration.SwerveModuleConfiguration;
 import org.firstinspires.ftc.teamcode.utility.math.controller.SimpleMotorFeedforward;
 import org.firstinspires.ftc.teamcode.utility.math.geometry.Rotation2d;

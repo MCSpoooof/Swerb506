@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.swerve.configuration.SwerveModulePhysicalC
 public final class RobotConstants {
     public static final SwerveModulePhysicalCharacteristics SWERVE_MODULE_PHYSICAL_CHARACTERISTICS =
             new SwerveModulePhysicalCharacteristics(
-            10, 1.0, 0.072, 1.1,
+            8.4, 1.0, 0.06, 1.1,
             12.0, 20, 20, 0.25,
             0.25, 1, 1, 0.0
     );
