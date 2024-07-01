@@ -141,7 +141,7 @@ public class SwerveTuning extends RobotHardware {
 
                 double xVelocity$ = -primary.left_stick_y * swerveControllerConfiguration.maxSpeed;
                 double yVelocity$ = -primary.left_stick_x * swerveControllerConfiguration.maxSpeed;
-                double angVelocity$ = primary.right_stick_x * swerveControllerConfiguration.maxAngularVelocity;
+                double angVelocity$ = -primary.right_stick_x * swerveControllerConfiguration.maxAngularVelocity;
 
                 swerveDrive.drive(new Translation2d(xVelocity$, yVelocity$), angVelocity$, false, true);
                 telemetry.addData("Index", index);

@@ -23,7 +23,9 @@ import org.firstinspires.ftc.teamcode.Swerb506.swerve.configuration.SwerveModule
 import org.firstinspires.ftc.teamcode.Swerb506.utility.math.ElapsedTimer;
 import org.firstinspires.ftc.teamcode.Swerb506.utility.math.geometry.Pose2d;
 import org.firstinspires.ftc.teamcode.Swerb506.utility.math.geometry.Rotation2d;
+import org.firstinspires.ftc.teamcode.Swerb506.utility.math.geometry.Translation2d;
 import org.firstinspires.ftc.teamcode.Swerb506.utility.misc.DashboardUtil;
+import org.firstinspires.ftc.teamcode.Swerb506.utility.trajectorysequence.TrajectorySequenceBuilder;
 
 /**
  * Main robot class which is responsible for:
@@ -53,7 +55,6 @@ public class RobotHardware extends OpMode {
     public static Pose2d lastPosition = new Pose2d(0.0,0.0, Rotation2d.fromDegrees(0.0));
     protected SwerveControllerConfiguration swerveControllerConfiguration;
     public SwerveDrive swerveDrive;
-
     @Override
     public void init() {
         // Initialize and configure acme-dashboard objects

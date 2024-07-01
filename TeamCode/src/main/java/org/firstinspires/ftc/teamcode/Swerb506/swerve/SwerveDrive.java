@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Swerb506.swerve;
 
 import com.acmerobotics.roadrunner.localization.ThreeTrackingWheelLocalizer;
+import com.acmerobotics.roadrunner.localization.TwoTrackingWheelLocalizer;
 
 import org.firstinspires.ftc.teamcode.Swerb506.swerve.configuration.SwerveControllerConfiguration;
 import org.firstinspires.ftc.teamcode.Swerb506.swerve.configuration.SwerveDriveConfiguration;
@@ -64,7 +65,7 @@ public class SwerveDrive {
      * rotation)
      */
     public Matrix<N3, N1> visionMeasurementStdDevs = VecBuilder.fill(0.9, 0.9, 0.9);
-    public final ThreeTrackingWheelLocalizer odometry;
+    public final TwoTrackingWheelLocalizer odometry;
     /**
      * Invert odometry readings of drive motor positions, used as a patch for debugging currently.
      */
@@ -108,7 +109,7 @@ public class SwerveDrive {
         this.imu = config.imu;
 
         this.swerveModules = config.modules;
-        this.odometry = new org.firstinspires.ftc.teamcode.Swerb506.swerve.odometry.TwoWheelTrackingLocalizer()TrackingWheelLocalizer();
+        this.odometry = new org.firstinspires.ftc.teamcode.Swerb506.swerve.odometry.TwoWheelTrackingLocalizer();
 //        swerveDrivePoseEstimator =
 //                new SwervePoseEstimator2(
 //                        kinematics,
