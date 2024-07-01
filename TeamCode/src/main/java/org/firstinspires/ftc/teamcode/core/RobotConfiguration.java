@@ -21,18 +21,18 @@ import org.firstinspires.ftc.teamcode.vision.SpikeDetectionProcessor;
 
 public enum RobotConfiguration {
     IMU(
-            new IMU("IMU 1")
+            new IMU("imu")
     ),
     CONTROL_HUB(
-            new ExpansionHub("Expansion Hub 173")
+            new ExpansionHub("Control Hub")
             .configureBulkCachingMode(LynxModule.BulkCachingMode.MANUAL)
     ),
-    EXPANSION_HUB(
+    /*EXPANSION_HUB(
             new ExpansionHub("Expansion Hub 2")
             .configureBulkCachingMode(LynxModule.BulkCachingMode.OFF)
-    ),
+    ),*/
     DRIVE_FRONT_LEFT(
-            new Motor("cm1")
+            new Motor("cm2")
             .configureDirection(DcMotorSimple.Direction.REVERSE)
             .configureZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE)
             .configureRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
@@ -59,33 +59,35 @@ public enum RobotConfiguration {
             .configureRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
             .setType(MotorTypes.DRIVE)
     ),
+    ///////////////////////
     ABSOLUTE_FRONT_LEFT(
-            new AbsoluteEncoder("ca2")
-            .zero(201.8)
+            new AbsoluteEncoder("ca1")
+            .zero(230.9)
             .setInverted(false)
     ),
     ABSOLUTE_FRONT_RIGHT(
-            new AbsoluteEncoder("ca0")
-            .zero(245.1)
+            new AbsoluteEncoder("ca2")
+            .zero(2.39)
             .setInverted(false)
     ),
     ABSOLUTE_BACK_LEFT(
-            new AbsoluteEncoder("ca3")
-            .zero(354.4)
+            new AbsoluteEncoder("ca0")
+            .zero(103.41)
             .setInverted(false)
     ),
     ABSOLUTE_BACK_RIGHT(
-            new AbsoluteEncoder("ca1")
-            .zero(244.5)
+            new AbsoluteEncoder("ca3")
+            .zero(164.94)
             .setInverted(false)
     ),
+    //////////////////////
     ANGLE_FRONT_LEFT(
             new ContinuousServo("cs2")
             .configureDirection(DcMotorSimple.Direction.FORWARD)
             .configurePIDWrapping()
             .configurePWMRange(AXON_CONTINUOUS_PWM)
-            .configurePIDF(0.006, 0.0, 0.0)
-            .configureFF(0.03)
+            .configurePIDF(0.01, 0.0, 0.0)
+            .configureFF(0.04)
             .configureEncoder(ABSOLUTE_FRONT_LEFT.getAsAbsoluteEncoder())
     ),
     ANGLE_FRONT_RIGHT(
@@ -93,7 +95,7 @@ public enum RobotConfiguration {
             .configureDirection(DcMotorSimple.Direction.FORWARD)
             .configurePIDWrapping()
             .configurePWMRange(AXON_CONTINUOUS_PWM)
-            .configurePIDF(0.006, 0.0, 0.0)
+            .configurePIDF(0.01, 0.0, 0.0)
             .configureFF(0.03)
             .configureEncoder(ABSOLUTE_FRONT_RIGHT.getAsAbsoluteEncoder())
     ),
@@ -102,8 +104,8 @@ public enum RobotConfiguration {
             .configureDirection(DcMotorSimple.Direction.FORWARD)
             .configurePIDWrapping()
             .configurePWMRange(AXON_CONTINUOUS_PWM)
-            .configurePIDF(0.006, 0.0, 0.0)
-            .configureFF(0.03)
+            .configurePIDF(0.01, 0.0, 0.0)
+            .configureFF(0.04)
             .configureEncoder(ABSOLUTE_BACK_LEFT.getAsAbsoluteEncoder())
     ),
     ANGLE_BACK_RIGHT(
@@ -111,8 +113,8 @@ public enum RobotConfiguration {
             .configureDirection(DcMotorSimple.Direction.FORWARD)
             .configurePIDWrapping()
             .configurePWMRange(AXON_CONTINUOUS_PWM)
-            .configurePIDF(0.006, 0.0, 0.0)
-            .configureFF(0.03)
+            .configurePIDF(0.01, 0.0, 0.0)
+            .configureFF(0.05)
             .configureEncoder(ABSOLUTE_BACK_RIGHT.getAsAbsoluteEncoder())
     ),
     ODOMETRY_PARALLEL(

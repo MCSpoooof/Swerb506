@@ -1,4 +1,4 @@
-/*package org.firstinspires.ftc.teamcode.opmode.teleop;
+package org.firstinspires.ftc.teamcode.opmode.teleop;
 
 import static org.firstinspires.ftc.teamcode.core.RobotConstants.DEADZONE;
 import static org.firstinspires.ftc.teamcode.core.RobotConstants.INTAKE_SPEED;

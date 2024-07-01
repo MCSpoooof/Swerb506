@@ -8,15 +8,16 @@ import org.firstinspires.ftc.teamcode.core.RobotHardware;
 import org.firstinspires.ftc.teamcode.hardware.AbsoluteEncoder;
 import org.firstinspires.ftc.teamcode.hardware.ContinuousServo;
 import org.firstinspires.ftc.teamcode.hardware.Encoder;
+import org.firstinspires.ftc.teamcode.hardware.Motor;
 import org.firstinspires.ftc.teamcode.hardware.meta.HardwareDevice;
 import org.firstinspires.ftc.teamcode.utility.math.ElapsedTimer;
 import org.firstinspires.ftc.teamcode.utility.math.geometry.Translation2d;
 
 @Config
-@TeleOp(name = "Swerve Tuning", group = "E")
+@TeleOp(name = "Swerve Tuning")
 public class SwerveTuning extends RobotHardware {
     public static double
-        fLOffset = 0.0, fROffset = 311.0-2.5, bLOffset = 138.7-18.9-0.6, bROffset = 158.0-2.7;
+        fLOffset = 230.9, fROffset = 2.39, bLOffset = 103.41, bROffset = 164.94;
 
     public static TuneState state = TuneState.DRIVE;
     public static WheelPosition angleWheel = WheelPosition.FRONT_LEFT;
@@ -43,6 +44,7 @@ public class SwerveTuning extends RobotHardware {
         ANGLE_PID,
         DRIVE_PID,
         SINGLE_ANGLE_PID,
+        SINGLE_MOTOR,
         kStatic
     }
     private AbsoluteEncoder frontLeft, frontRight, backLeft, backRight;
@@ -103,6 +105,26 @@ public class SwerveTuning extends RobotHardware {
 
                 swerveDrive.drive(new Translation2d(xVelocity, yVelocity), angVelocity, false, true);
                 break;
+
+            case SINGLE_MOTOR:
+                Motor motor;
+                switch (angleWheel) {
+                    case FRONT_LEFT:
+                        motor = RobotConfiguration.DRIVE_FRONT_LEFT.getAsMotor();
+                        break;
+                    case FRONT_RIGHT:
+                        motor = RobotConfiguration.DRIVE_FRONT_RIGHT.getAsMotor();
+                        break;
+                    case BACK_LEFT:
+                        motor = RobotConfiguration.DRIVE_BACK_LEFT.getAsMotor();
+                        break;
+                    default:
+                        motor = RobotConfiguration.DRIVE_BACK_RIGHT.getAsMotor();
+                }
+
+                motor.setPower(-primary.left_stick_y * swerveControllerConfiguration.maxSpeed);
+                break;
+
             case ANGLE_PID:
                 if(prevAP != aP || prevAI != aI || prevAD != aD || prevAFF != aFF) {
                     fL.configurePIDF(aP, aI, aD, aFF);
