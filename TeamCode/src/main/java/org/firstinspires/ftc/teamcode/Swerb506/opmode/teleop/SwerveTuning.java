@@ -100,7 +100,7 @@ public class SwerveTuning extends RobotHardware {
                 } else {
                     xVelocity = -primary.left_stick_y * swerveControllerConfiguration.maxSpeed * prec;
                     yVelocity = -primary.left_stick_x * swerveControllerConfiguration.maxSpeed * prec;
-                    angVelocity = primary.right_stick_x * swerveControllerConfiguration.maxAngularVelocity * prec;
+                    angVelocity = -primary.right_stick_x * swerveControllerConfiguration.maxAngularVelocity * prec;
                 }
 
                 swerveDrive.drive(new Translation2d(xVelocity, yVelocity), angVelocity, false, true);

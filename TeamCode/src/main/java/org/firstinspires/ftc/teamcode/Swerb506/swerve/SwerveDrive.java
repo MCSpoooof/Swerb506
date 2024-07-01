@@ -108,7 +108,7 @@ public class SwerveDrive {
         this.imu = config.imu;
 
         this.swerveModules = config.modules;
-        this.odometry = new org.firstinspires.ftc.teamcode.Swerb506.swerve.odometry.ThreeTrackingWheelLocalizer();
+        this.odometry = new org.firstinspires.ftc.teamcode.Swerb506.swerve.odometry.TwoWheelTrackingLocalizer()TrackingWheelLocalizer();
 //        swerveDrivePoseEstimator =
 //                new SwervePoseEstimator2(
 //                        kinematics,
