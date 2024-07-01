@@ -1,24 +1,9 @@
 package org.firstinspires.ftc.teamcode.opmode.teleop;
 
-import static org.firstinspires.ftc.teamcode.core.RobotConstants.DEADZONE;
-import static org.firstinspires.ftc.teamcode.core.RobotConstants.INTAKE_SPEED;
-import static org.firstinspires.ftc.teamcode.core.RobotConstants.IntakePosition;
-import static org.firstinspires.ftc.teamcode.core.RobotConstants.OUTTAKE_SPEED;
-import static org.firstinspires.ftc.teamcode.core.RobotConstants.WRIST_CENTER;
-
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.roadrunner.control.PIDFController;
-import com.acmerobotics.roadrunner.profile.MotionProfile;
-import com.acmerobotics.roadrunner.profile.MotionProfileGenerator;
-import com.acmerobotics.roadrunner.profile.MotionState;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.core.RobotConfiguration;
-import org.firstinspires.ftc.teamcode.core.RobotConstants;
 import org.firstinspires.ftc.teamcode.core.RobotHardware;
-import org.firstinspires.ftc.teamcode.hardware.Encoder;
-import org.firstinspires.ftc.teamcode.hardware.Motor;
-import org.firstinspires.ftc.teamcode.hardware.Servo;
 import org.firstinspires.ftc.teamcode.swerve.SwerveDrive;
 import org.firstinspires.ftc.teamcode.utility.autonomous.Executive;
 import org.firstinspires.ftc.teamcode.utility.math.geometry.Pose2d;
@@ -26,16 +11,16 @@ import org.firstinspires.ftc.teamcode.utility.math.geometry.Translation2d;
 
 @Config
 @TeleOp(name="Manual", group="A")
-public class Manual extends RobotHardware {
+public class TelePop extends RobotHardware {
     public static double precisionMode = 1.0;
     private final double precisionPercentage = 0.4;
     public static boolean fieldRelative = true;
     public static boolean headingCorrection = true;
-    private final Executive.StateMachine<Manual> stateMachine;
+    private final Executive.StateMachine<TelePop> stateMachine;
 
     public static double slideDownSpeed = 0.6, slideSpeed = 1.0, liftSpeed = 1.0;
 
-    public Manual() {
+    public TelePop() {
         stateMachine = new Executive.StateMachine<>(this);
         stateMachine.update();
     }
@@ -70,7 +55,7 @@ public class Manual extends RobotHardware {
         stateMachine.update();
     }
 
-    class Drive_Manual extends Executive.StateBase<Manual> {
+    class Drive_Manual extends Executive.StateBase<TelePop> {
         @Override
         public void update() {
             super.update();
