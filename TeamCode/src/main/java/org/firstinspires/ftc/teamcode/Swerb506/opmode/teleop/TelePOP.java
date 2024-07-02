@@ -15,7 +15,7 @@ public class TelePOP extends RobotHardware {
     public static double precisionMode = 1.0;
     private final double precisionPercentage = 0.4;
     public static boolean fieldRelative = true;
-    public static boolean headingCorrection = true;
+    public static boolean headingCorrection = false;
     private final Executive.StateMachine<TelePOP> stateMachine;
 
     public TelePOP() {

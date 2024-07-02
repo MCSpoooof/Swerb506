@@ -111,7 +111,7 @@ public class RobotHardware extends OpMode {
 
         SwerveDriveConfiguration swerveDriveConfiguration = new SwerveDriveConfiguration(
                 new SwerveModuleConfiguration[]{front_left, front_right, back_left, back_right},
-                RobotConfiguration.IMU.getAsIMU(), 2.4, false);
+                RobotConfiguration.IMU.getAsIMU(), 2.4, true);
 
         swerveControllerConfiguration = new SwerveControllerConfiguration(
                 swerveDriveConfiguration, new PIDFConfig(0.7, 0.0));
