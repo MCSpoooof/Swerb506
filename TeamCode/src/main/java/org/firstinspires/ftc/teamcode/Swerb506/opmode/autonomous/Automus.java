@@ -63,6 +63,8 @@ public class Automus extends RobotHardware {
     public void loop() {
         super.loop();
 
+        swerveDrive.updateOdometry();
+
         if(finishedDriving) {
             telemetry.addLine("Finished Driving");
             return;

@@ -218,6 +218,9 @@ public class SwerveDrive {
         // Thank you to Jared Russell FRC254 for Open Loop Compensation Code
         // https://www.chiefdelphi.com/t/whitepaper-swerve-drive-skew-and-second-order-kinematics/416964/5
         //ToDo See if chassis velocity correct helps in path following
+
+        imu.update();
+
         if (false && chassisVelocityCorrection) {
             double dtConstant = 0.009;
             Pose2d robotPoseVel = new Pose2d(velocity.vxMetersPerSecond * dtConstant,
