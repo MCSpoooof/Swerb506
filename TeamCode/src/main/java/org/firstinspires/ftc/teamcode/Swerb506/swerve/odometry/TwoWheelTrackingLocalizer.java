@@ -1,19 +1,16 @@
 package org.firstinspires.ftc.teamcode.Swerb506.swerve.odometry;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-
 import androidx.annotation.NonNull;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.localization.TwoTrackingWheelLocalizer;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Swerb506.hardware.Encoder;
 import org.firstinspires.ftc.teamcode.Swerb506.core.RobotConfiguration;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
 
@@ -26,6 +23,9 @@ public class TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
 
     public static double PERPENDICULAR_X = 3.39;
     public static double PERPENDICULAR_Y = -0.05;
+
+    private Supplier<Double> headingSupplier;
+    private Supplier<Double> headingVelocitySupplier;
 
     // Parallel/Perpendicular to the forward axis
     // Parallel wheel is parallel to the forward axis
@@ -42,18 +42,23 @@ public class TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
         perpendicularEncoder = RobotConfiguration.ODOMETRY_PERPENDICULAR.getAsEncoder();
     }
 
+    public void setSupplier(Supplier<Double> headingSupplier, Supplier<Double> headingVelocitySupplier) {
+        this.headingSupplier = headingSupplier;
+        this.headingVelocitySupplier = headingVelocitySupplier;
+    }
+
     public static double encoderTicksToInches(double ticks) {
         return WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO * ticks / TICKS_PER_REV;
     }
 
     @Override
     public double getHeading() {
-        return 0.0;
+        return headingSupplier.get();
     }
 
     @Override
     public Double getHeadingVelocity() {
-        return 0.0;
+        return headingVelocitySupplier.get();
     }
 
     @NonNull
@@ -68,10 +73,6 @@ public class TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
     @NonNull
     @Override
     public List<Double> getWheelVelocities() {
-        // TODO: If your encoder velocity can exceed 32767 counts / second (such as the REV Through Bore and other
-        //  competing magnetic encoders), change Encoder.getRawVelocity() to Encoder.getCorrectedVelocity() to enable a
-        //  compensation method
-
         return Arrays.asList(
                 encoderTicksToInches(parallelEncoder.getRawVelocity()),
                 encoderTicksToInches(perpendicularEncoder.getRawVelocity())

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Swerb506.opmode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.Swerb506.core.RobotConfiguration;
 import org.firstinspires.ftc.teamcode.Swerb506.core.RobotHardware;
 import org.firstinspires.ftc.teamcode.Swerb506.utility.math.ElapsedTimer;
 import org.firstinspires.ftc.teamcode.Swerb506.utility.math.geometry.Pose2d;
@@ -51,7 +52,13 @@ public class Automus extends RobotHardware {
         controller.reset(poseSupplier.get(), currentSpeeds);
         elapsedTimer.reset();
     }
+    @Override
+    public void init_loop() {
+        super.init_loop();
 
+        telemetry.addData("PARALLEL", RobotConfiguration.ODOMETRY_PARALLEL.getAsEncoder());
+        telemetry.addData("Perp", RobotConfiguration.ODOMETRY_PERPENDICULAR.getAsEncoder());
+    }
     @Override
     public void loop() {
         super.loop();
