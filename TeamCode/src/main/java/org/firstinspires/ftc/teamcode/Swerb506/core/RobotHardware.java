@@ -25,7 +25,6 @@ import org.firstinspires.ftc.teamcode.Swerb506.utility.math.geometry.Pose2d;
 import org.firstinspires.ftc.teamcode.Swerb506.utility.math.geometry.Rotation2d;
 import org.firstinspires.ftc.teamcode.Swerb506.utility.math.geometry.Translation2d;
 import org.firstinspires.ftc.teamcode.Swerb506.utility.misc.DashboardUtil;
-import org.firstinspires.ftc.teamcode.Swerb506.utility.trajectorysequence.TrajectorySequenceBuilder;
 
 /**
  * Main robot class which is responsible for:
@@ -111,7 +110,7 @@ public class RobotHardware extends OpMode {
 
         SwerveDriveConfiguration swerveDriveConfiguration = new SwerveDriveConfiguration(
                 new SwerveModuleConfiguration[]{front_left, front_right, back_left, back_right},
-                RobotConfiguration.IMU.getAsIMU(), 2.4, false);
+                RobotConfiguration.IMU.getAsIMU(), 2.4, true);
 
         swerveControllerConfiguration = new SwerveControllerConfiguration(
                 swerveDriveConfiguration, new PIDFConfig(0.7, 0.0));
