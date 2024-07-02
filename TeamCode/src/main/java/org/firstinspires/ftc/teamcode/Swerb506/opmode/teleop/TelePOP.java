@@ -84,6 +84,7 @@ public class TelePOP extends RobotHardware {
             double thetaV = -primary.right_stick_x * swerveControllerConfiguration.maxAngularVelocity * precisionMode;
             swerveDrive.drive(new Translation2d(xV, yV), thetaV, fieldRelative, true, headingCorrection);
             swerveDrive.updateOdometry();
+            telemetry.addData("Robot Oriantation", swerveDrive.getYaw().getDegrees());
         }
     }
 }
