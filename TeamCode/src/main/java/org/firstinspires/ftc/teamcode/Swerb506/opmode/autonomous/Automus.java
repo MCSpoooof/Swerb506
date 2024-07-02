@@ -56,8 +56,8 @@ public class Automus extends RobotHardware {
     public void init_loop() {
         super.init_loop();
 
-        telemetry.addData("PARALLEL", RobotConfiguration.ODOMETRY_PARALLEL.getAsEncoder());
-        telemetry.addData("Perp", RobotConfiguration.ODOMETRY_PERPENDICULAR.getAsEncoder());
+        telemetry.addData("PARALLEL", RobotConfiguration.ODOMETRY_PARALLEL.getAsEncoder().getCurrentPosition());
+        telemetry.addData("Perp", RobotConfiguration.ODOMETRY_PERPENDICULAR.getAsEncoder().getCurrentPosition());
     }
     @Override
     public void loop() {

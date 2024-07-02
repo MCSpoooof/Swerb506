@@ -116,12 +116,12 @@ public enum RobotConfiguration {
             .configureEncoder(ABSOLUTE_BACK_RIGHT.getAsAbsoluteEncoder())
     ),
     ODOMETRY_PARALLEL(
-            new Encoder("cm0")
-            .setDirection(Encoder.Direction.FORWARD)
-    ),
-    ODOMETRY_PERPENDICULAR(
             new Encoder("cm3")
             .setDirection(Encoder.Direction.REVERSE)
+    ),
+    ODOMETRY_PERPENDICULAR(
+            new Encoder("cm0")
+            .setDirection(Encoder.Direction.FORWARD)
     );
     /*WEBCAM(
             new Webcam("cu0")

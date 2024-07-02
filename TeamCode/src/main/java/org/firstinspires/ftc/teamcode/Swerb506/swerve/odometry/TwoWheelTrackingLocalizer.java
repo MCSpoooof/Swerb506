@@ -18,11 +18,11 @@ public class TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
     public static double WHEEL_RADIUS = 48/25.4; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
-    public static double PARALLEL_X = -5.19; // X is the up and down direction
-    public static double PARALLEL_Y = -0.77; // Y is the strafe direction
+    public static double PARALLEL_X = 0.77; // X is the up and down direction
+    public static double PARALLEL_Y = -5.19; // Y is the strafe direction
 
-    public static double PERPENDICULAR_X = 3.39;
-    public static double PERPENDICULAR_Y = -0.05;
+    public static double PERPENDICULAR_X = -0.05;
+    public static double PERPENDICULAR_Y = 3.39;
 
     private Supplier<Double> headingSupplier;
     private Supplier<Double> headingVelocitySupplier;
@@ -53,12 +53,12 @@ public class TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
 
     @Override
     public double getHeading() {
-        return headingSupplier.get();
+        return -headingSupplier.get();
     }
 
     @Override
     public Double getHeadingVelocity() {
-        return headingVelocitySupplier.get();
+        return -headingVelocitySupplier.get();
     }
 
     @NonNull

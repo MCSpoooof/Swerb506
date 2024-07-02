@@ -164,7 +164,6 @@ public class SwerveDrive {
      */
     public void drive(
             Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop, boolean headingCorrection) {
-        if(headingCorrection || fieldRelative)
             imu.update();
         // Creates a robot-relative ChassisSpeeds object, converting from field-relative speeds if
         // necessary.

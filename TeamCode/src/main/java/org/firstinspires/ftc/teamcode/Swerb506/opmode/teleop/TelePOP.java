@@ -85,6 +85,7 @@ public class TelePOP extends RobotHardware {
             swerveDrive.drive(new Translation2d(xV, yV), thetaV, fieldRelative, true, headingCorrection);
             swerveDrive.updateOdometry();
             telemetry.addData("Robot Oriantation", swerveDrive.getYaw().getDegrees());
+            telemetry.addData("Driver Pose", swerveDrive.getPose());
         }
     }
 }
