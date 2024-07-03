@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Swerb506.core.RobotHardware;
 import org.firstinspires.ftc.teamcode.Swerb506.swerve.SwerveDrive;
 import org.firstinspires.ftc.teamcode.Swerb506.utility.autonomous.Executive;
-import org.firstinspires.ftc.teamcode.Swerb506.utility.math.filter.SlewRateLimiter;
 import org.firstinspires.ftc.teamcode.Swerb506.utility.math.geometry.Pose2d;
 import org.firstinspires.ftc.teamcode.Swerb506.utility.math.geometry.Translation2d;
 
@@ -80,9 +79,9 @@ public class TelePOP extends RobotHardware {
                 SwerveDrive.updatedHeading = true;
             }
 
-            double xV = -primary.left_stick_y * swerveControllerConfiguration.maxSpeed * precisionMode;
-            double yV = -primary.left_stick_x * swerveControllerConfiguration.maxSpeed * precisionMode;
-            double thetaV = -primary.right_stick_x * swerveControllerConfiguration.maxAngularVelocity * precisionMode;
+            double xV = Math.pow(-primary.left_stick_y, 3) * swerveControllerConfiguration.maxSpeed * precisionMode;
+            double yV = Math.pow(-primary.left_stick_x, 3) * swerveControllerConfiguration.maxSpeed * precisionMode;
+            double thetaV = Math.pow(-primary.right_stick_x, 3) * swerveControllerConfiguration.maxAngularVelocity * precisionMode;
             swerveDrive.drive(new Translation2d(xV, yV), thetaV, fieldRelative, true, headingCorrection);
             swerveDrive.updateOdometry();
             telemetry.addData("Robot Oriantation", swerveDrive.getYaw().getDegrees());
