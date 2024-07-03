@@ -34,11 +34,11 @@ public class Automus extends RobotHardware {
         super.init();
 
         controller = new PPHolonomicDriveController(
-                new PIDConstants(6.0, 0.0, 0.0),
-                new PIDConstants(8.0, 0.0, 0.0),
-                0.017,
+                new PIDConstants(3.0, 0.0, 0.0),
+                new PIDConstants(4.0, 0.0, 0.0),
+                0.012,
                 1.6,
-                0.2507
+                0.12
         );
 
         poseSupplier = swerveDrive::getPose;
@@ -46,7 +46,7 @@ public class Automus extends RobotHardware {
         output = swerveDrive::drive;
 
         ChassisSpeeds currentSpeeds = speedsSupplier.get();
-        path = PathPlannerPath.fromPathFile("Turn Test");
+        path = PathPlannerPath.fromPathFile("Square");
 
         trajectory = new PathPlannerTrajectory(path, currentSpeeds);
         controller.reset(poseSupplier.get(), currentSpeeds);

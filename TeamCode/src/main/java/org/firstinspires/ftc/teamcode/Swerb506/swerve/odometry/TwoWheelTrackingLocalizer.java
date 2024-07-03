@@ -23,6 +23,8 @@ public class TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
 
     public static double PERPENDICULAR_X = 0.05;
     public static double PERPENDICULAR_Y = -3.39;
+    public static double X_MULTIPLYER = 1;
+    public static double Y_MULTIPLYER = 1;
 
     private Supplier<Double> headingSupplier;
     private Supplier<Double> headingVelocitySupplier;
@@ -65,8 +67,8 @@ public class TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
     @Override
     public List<Double> getWheelPositions() {
         return Arrays.asList(
-                encoderTicksToInches(parallelEncoder.getCurrentPosition()),
-                encoderTicksToInches(perpendicularEncoder.getCurrentPosition())
+                encoderTicksToInches(parallelEncoder.getCurrentPosition()) * X_MULTIPLYER,
+                encoderTicksToInches(perpendicularEncoder.getCurrentPosition()) * Y_MULTIPLYER
         );
     }
 

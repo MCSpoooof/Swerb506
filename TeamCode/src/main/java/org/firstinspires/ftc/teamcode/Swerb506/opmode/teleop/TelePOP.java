@@ -18,9 +18,6 @@ public class TelePOP extends RobotHardware {
     public static boolean fieldRelative = true;
     public static boolean headingCorrection = false;
     private final Executive.StateMachine<TelePOP> stateMachine;
-    private SlewRateLimiter xLimiter;
-    private SlewRateLimiter yLimiter;
-    private SlewRateLimiter angleLimiter;
 
     public TelePOP() {
         stateMachine = new Executive.StateMachine<>(this);
@@ -31,9 +28,6 @@ public class TelePOP extends RobotHardware {
     public void init() {
         super.init();
         stateMachine.init();
-        xLimiter = new SlewRateLimiter(0.2);
-        yLimiter = new SlewRateLimiter(0.2);
-        angleLimiter = new SlewRateLimiter(0.2);
 //Init things here
     }
 
@@ -86,9 +80,9 @@ public class TelePOP extends RobotHardware {
                 SwerveDrive.updatedHeading = true;
             }
 
-            double xV = xLimiter.calculate(-primary.left_stick_y * swerveControllerConfiguration.maxSpeed * precisionMode);
-            double yV = yLimiter.calculate(-primary.left_stick_x * swerveControllerConfiguration.maxSpeed * precisionMode);
-            double thetaV = angleLimiter.calculate(-primary.right_stick_x * swerveControllerConfiguration.maxAngularVelocity * precisionMode);
+            double xV = -primary.left_stick_y * swerveControllerConfiguration.maxSpeed * precisionMode;
+            double yV = -primary.left_stick_x * swerveControllerConfiguration.maxSpeed * precisionMode;
+            double thetaV = -primary.right_stick_x * swerveControllerConfiguration.maxAngularVelocity * precisionMode;
             swerveDrive.drive(new Translation2d(xV, yV), thetaV, fieldRelative, true, headingCorrection);
             swerveDrive.updateOdometry();
             telemetry.addData("Robot Oriantation", swerveDrive.getYaw().getDegrees());
