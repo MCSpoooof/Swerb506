@@ -17,7 +17,8 @@ public class TelePOP extends RobotHardware {
     public static boolean fieldRelative = true;
     public static boolean headingCorrection = false;
     public boolean slowMode = false;
-    public double power;
+
+    public double speed;
     private final Executive.StateMachine<TelePOP> stateMachine;
 
     public TelePOP() {
@@ -81,20 +82,20 @@ public class TelePOP extends RobotHardware {
                 SwerveDrive.updatedHeading = true;
             }
 
-            if (primary.rightBumperOnce()) {
+            if (primary.leftBumperOnce()) {
                 slowMode = !slowMode;
             }
 
             if (!slowMode) {
-                power = 1;
+                speed = 1;
             }
-                else if (slowMode = true) {
-                    power = 3;
+                else {
+                    speed = 3;
                 }
 
-            double xV = Math.pow(-primary.left_stick_y, power) * swerveControllerConfiguration.maxSpeed * precisionMode;
-            double yV = Math.pow(-primary.left_stick_x, power) * swerveControllerConfiguration.maxSpeed * precisionMode;
-            double thetaV = Math.pow(-primary.right_stick_x, power) * swerveControllerConfiguration.maxAngularVelocity * precisionMode;
+            double xV = -primary.left_stick_y * (swerveControllerConfiguration.maxSpeed * precisionMode)/speed;
+            double yV = -primary.left_stick_x * (swerveControllerConfiguration.maxSpeed * precisionMode)/speed;
+            double thetaV = -primary.right_stick_x * (swerveControllerConfiguration.maxAngularVelocity * precisionMode)/speed;
             swerveDrive.drive(new Translation2d(xV, yV), thetaV, fieldRelative, true, headingCorrection);
             swerveDrive.updateOdometry();
             telemetry.addData("Slow Mode", slowMode);

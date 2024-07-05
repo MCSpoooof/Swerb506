@@ -46,7 +46,7 @@ public class Automus extends RobotHardware {
         output = swerveDrive::drive;
 
         ChassisSpeeds currentSpeeds = speedsSupplier.get();
-        path = PathPlannerPath.fromPathFile("Square");
+        path = PathPlannerPath.fromPathFile("Turn Test");
 
         trajectory = new PathPlannerTrajectory(path, currentSpeeds);
         controller.reset(poseSupplier.get(), currentSpeeds);
