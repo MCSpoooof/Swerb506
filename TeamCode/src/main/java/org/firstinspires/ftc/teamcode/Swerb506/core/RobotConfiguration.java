@@ -60,22 +60,22 @@ public enum RobotConfiguration {
     ///////////////////////
     ABSOLUTE_FRONT_LEFT(
             new AbsoluteEncoder("ca1")
-            .zero(230.9)
+            .zero(231.27)
             .setInverted(false)
     ),
     ABSOLUTE_FRONT_RIGHT(
             new AbsoluteEncoder("ca2")
-            .zero(2.39)
+            .zero(359.23)
             .setInverted(false)
     ),
     ABSOLUTE_BACK_LEFT(
             new AbsoluteEncoder("ca0")
-            .zero(103.41)
+            .zero(100.8)
             .setInverted(false)
     ),
     ABSOLUTE_BACK_RIGHT(
             new AbsoluteEncoder("ca3")
-            .zero(164.94)
+            .zero(165.7)
             .setInverted(false)
     ),
     //////////////////////

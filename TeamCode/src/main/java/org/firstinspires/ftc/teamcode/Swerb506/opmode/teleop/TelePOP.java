@@ -16,6 +16,8 @@ public class TelePOP extends RobotHardware {
     private final double precisionPercentage = 0.4;
     public static boolean fieldRelative = true;
     public static boolean headingCorrection = false;
+    public boolean slowMode = false;
+    public double power;
     private final Executive.StateMachine<TelePOP> stateMachine;
 
     public TelePOP() {
@@ -79,12 +81,25 @@ public class TelePOP extends RobotHardware {
                 SwerveDrive.updatedHeading = true;
             }
 
-            double xV = Math.pow(-primary.left_stick_y, 3) * swerveControllerConfiguration.maxSpeed * precisionMode;
-            double yV = Math.pow(-primary.left_stick_x, 3) * swerveControllerConfiguration.maxSpeed * precisionMode;
-            double thetaV = Math.pow(-primary.right_stick_x, 3) * swerveControllerConfiguration.maxAngularVelocity * precisionMode;
+            if (primary.rightBumperOnce()) {
+                slowMode = !slowMode;
+            }
+
+            if (!slowMode) {
+                power = 1;
+            }
+                else if (slowMode = true) {
+                    power = 3;
+                }
+
+            double xV = Math.pow(-primary.left_stick_y, power) * swerveControllerConfiguration.maxSpeed * precisionMode;
+            double yV = Math.pow(-primary.left_stick_x, power) * swerveControllerConfiguration.maxSpeed * precisionMode;
+            double thetaV = Math.pow(-primary.right_stick_x, power) * swerveControllerConfiguration.maxAngularVelocity * precisionMode;
             swerveDrive.drive(new Translation2d(xV, yV), thetaV, fieldRelative, true, headingCorrection);
             swerveDrive.updateOdometry();
-            telemetry.addData("Robot Oriantation", swerveDrive.getYaw().getDegrees());
+            telemetry.addData("Slow Mode", slowMode);
+            telemetry.addData("Field Oriented", fieldRelative);
+            telemetry.addData("Robot Heading", swerveDrive.getYaw().getDegrees());
             telemetry.addData("Driver Pose", swerveDrive.getPose());
         }
     }

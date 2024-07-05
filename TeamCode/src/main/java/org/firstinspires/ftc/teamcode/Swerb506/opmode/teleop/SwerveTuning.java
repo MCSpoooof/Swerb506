@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.Swerb506.utility.math.geometry.Translation
 @TeleOp(name = "Swerve Tuning")
 public class SwerveTuning extends RobotHardware {
     public static double
-        fLOffset = 230.9, fROffset = 2.39, bLOffset = 103.41, bROffset = 164.94;
+        fLOffset = 0, fROffset = 0, bLOffset = 0, bROffset = 0;
 
     public static TuneState state = TuneState.DRIVE;
     public static WheelPosition angleWheel = WheelPosition.FRONT_LEFT;
