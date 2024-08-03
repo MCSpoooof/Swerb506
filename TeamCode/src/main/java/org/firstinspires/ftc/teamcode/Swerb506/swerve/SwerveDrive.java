@@ -441,9 +441,9 @@ public class SwerveDrive {
      */
     public void zeroGyro() {
         imu.update();
-        imu.setOffset(imu.getRawRotation3d().plus(new Rotation3d()));
+        imu.setOffset(imu.getRawRotation3d().plus(new Rotation3d(0, 0, 180)));
         swerveController.lastAngleScalar = 0;
-        lastHeadingRadians = 180;
+        lastHeadingRadians = 0;
         resetOdometry(new Pose2d(getPose().getTranslation(), new Rotation2d()));
     }
 
