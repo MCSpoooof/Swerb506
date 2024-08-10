@@ -93,9 +93,9 @@ public class TelePOP extends RobotHardware {
                     speed = 3;
                 }
 
-            double xV = -primary.left_stick_y * (swerveControllerConfiguration.maxSpeed * precisionMode)/speed;
-            double yV = -primary.left_stick_x * (swerveControllerConfiguration.maxSpeed * precisionMode)/speed;
-            double thetaV = -primary.right_stick_x * (swerveControllerConfiguration.maxAngularVelocity * precisionMode)/speed;
+            double xV = Math.pow(-primary.left_stick_y, 3);
+            double yV = Math.pow(-primary.left_stick_x, 3);
+            double thetaV = Math.pow(-primary.right_stick_x, 3);
             swerveDrive.drive(new Translation2d(xV, yV), thetaV, fieldRelative, true, headingCorrection);
             swerveDrive.updateOdometry();
             telemetry.addData("Slow Mode", slowMode);
