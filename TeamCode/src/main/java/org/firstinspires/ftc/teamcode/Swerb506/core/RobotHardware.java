@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Swerb506.core;
 
 import static org.firstinspires.ftc.teamcode.Swerb506.core.RobotConstants.SWERVE_MODULE_PHYSICAL_CHARACTERISTICS;
+import static org.firstinspires.ftc.teamcode.Swerb506.core.RobotConstants.maxSpeed;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.canvas.Canvas;
@@ -16,6 +17,7 @@ import org.firstinspires.ftc.teamcode.Swerb506.hardware.Webcam;
 import org.firstinspires.ftc.teamcode.Swerb506.hardware.meta.HardwareDevice;
 import org.firstinspires.ftc.teamcode.Swerb506.hardware.meta.HardwareStatus;
 import org.firstinspires.ftc.teamcode.Swerb506.swerve.SwerveDrive;
+import org.firstinspires.ftc.teamcode.Swerb506.core.RobotConstants;
 import org.firstinspires.ftc.teamcode.Swerb506.swerve.configuration.PIDFConfig;
 import org.firstinspires.ftc.teamcode.Swerb506.swerve.configuration.SwerveControllerConfiguration;
 import org.firstinspires.ftc.teamcode.Swerb506.swerve.configuration.SwerveDriveConfiguration;
@@ -81,7 +83,7 @@ public class RobotHardware extends OpMode {
                 RobotConfiguration.ANGLE_FRONT_LEFT.getAsContinuousServo(),
                 RobotConfiguration.ABSOLUTE_FRONT_LEFT.getAsAbsoluteEncoder(),
                 0.1778, 0.1778, new PIDFConfig(0.009,0.0),
-                new PIDFConfig(0.08, 0.0), 2.2, SWERVE_MODULE_PHYSICAL_CHARACTERISTICS, "FrontLeft"
+                new PIDFConfig(0.08, 0.0), maxSpeed, SWERVE_MODULE_PHYSICAL_CHARACTERISTICS, "FrontLeft"
         );
 
         SwerveModuleConfiguration front_right = new SwerveModuleConfiguration(
@@ -89,7 +91,7 @@ public class RobotHardware extends OpMode {
                 RobotConfiguration.ANGLE_FRONT_RIGHT.getAsContinuousServo(),
                 RobotConfiguration.ABSOLUTE_FRONT_RIGHT.getAsAbsoluteEncoder(),
                 0.1778, -0.1778, new PIDFConfig(0.009,0.0),
-                new PIDFConfig(0.08, 0.0), 2.2, SWERVE_MODULE_PHYSICAL_CHARACTERISTICS, "FrontRight"
+                new PIDFConfig(0.08, 0.0), maxSpeed, SWERVE_MODULE_PHYSICAL_CHARACTERISTICS, "FrontRight"
         );
 
         SwerveModuleConfiguration back_left = new SwerveModuleConfiguration(
@@ -97,7 +99,7 @@ public class RobotHardware extends OpMode {
                 RobotConfiguration.ANGLE_BACK_LEFT.getAsContinuousServo(),
                 RobotConfiguration.ABSOLUTE_BACK_LEFT.getAsAbsoluteEncoder(),
                 -0.1778, 0.1778, new PIDFConfig(0.009,0.0),
-                new PIDFConfig(0.08, 0.0), 2.2, SWERVE_MODULE_PHYSICAL_CHARACTERISTICS, "BackLeft"
+                new PIDFConfig(0.08, 0.0), maxSpeed, SWERVE_MODULE_PHYSICAL_CHARACTERISTICS, "BackLeft"
         );
 
         SwerveModuleConfiguration back_right = new SwerveModuleConfiguration(
@@ -105,12 +107,12 @@ public class RobotHardware extends OpMode {
                 RobotConfiguration.ANGLE_BACK_RIGHT.getAsContinuousServo(),
                 RobotConfiguration.ABSOLUTE_BACK_RIGHT.getAsAbsoluteEncoder(),
                 -0.1778, -0.1778, new PIDFConfig(0.008,0.0),
-                new PIDFConfig(0.08, 0.0), 2.2, SWERVE_MODULE_PHYSICAL_CHARACTERISTICS, "BackRight"
+                new PIDFConfig(0.08, 0.0), maxSpeed, SWERVE_MODULE_PHYSICAL_CHARACTERISTICS, "BackRight"
         );
 
         SwerveDriveConfiguration swerveDriveConfiguration = new SwerveDriveConfiguration(
                 new SwerveModuleConfiguration[]{front_left, front_right, back_left, back_right},
-                RobotConfiguration.IMU.getAsIMU(), 2.4, true);
+                RobotConfiguration.IMU.getAsIMU(), maxSpeed, true);
 
         swerveControllerConfiguration = new SwerveControllerConfiguration(
                 swerveDriveConfiguration, new PIDFConfig(0.7, 0.0));

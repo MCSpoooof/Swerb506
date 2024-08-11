@@ -12,8 +12,6 @@ import org.firstinspires.ftc.teamcode.Swerb506.utility.math.geometry.Translation
 @Config
 @TeleOp(name= "TelePOP")
 public class TelePOP extends RobotHardware {
-    public static double precisionMode = 1.0;
-    private final double precisionPercentage = 0.4;
     public static boolean fieldRelative = true;
     public static boolean headingCorrection = false;
     public boolean slowMode = false;
@@ -60,11 +58,6 @@ public class TelePOP extends RobotHardware {
         public void update() {
             super.update();
 
-            if (primary.AOnce()) {
-//                swerveDrive.setMaximumSpeed(precisionMode ? SWERVE_MAX_SPEED : SWERVE_PRECISION_SPEED);
-                precisionMode = precisionMode == 1.0 ? precisionPercentage : 1.0;
-            }
-
             if (primary.YOnce()) {
                 swerveDrive.zeroGyro();
                 swerveDrive.resetOdometry(new Pose2d());
@@ -93,9 +86,9 @@ public class TelePOP extends RobotHardware {
                     speed = 3;
                 }
 
-            double xV = Math.pow(-primary.left_stick_y, 3);
-            double yV = Math.pow(-primary.left_stick_x, 3);
-            double thetaV = Math.pow(-primary.right_stick_x, 3);
+            double xV = (Math.pow(-primary.left_stick_y, 3) * swerveControllerConfiguration.maxSpeed) / speed;
+            double yV = (Math.pow(-primary.left_stick_x, 3) * swerveControllerConfiguration.maxSpeed) / speed;
+            double thetaV = (Math.pow(-primary.right_stick_x, 3) * swerveControllerConfiguration.maxAngularVelocity) / speed;
             swerveDrive.drive(new Translation2d(xV, yV), thetaV, fieldRelative, true, headingCorrection);
             swerveDrive.updateOdometry();
             telemetry.addData("Slow Mode", slowMode);

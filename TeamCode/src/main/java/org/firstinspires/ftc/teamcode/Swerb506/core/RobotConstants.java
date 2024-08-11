@@ -24,16 +24,11 @@ public final class RobotConstants {
 
     public static PIDFController slideController = new PIDFController(new PIDCoefficients(0.01, 0.0, 0.0001), 0, 0, 0.05);
 
-    public static final int DRIVE_TICKS_PER_METER = 1230;
     public static final double MOTOR_CACHE_TOLERANCE = 0.02;
 
     //ToDo Incorporate proper maximum speed limiting on swerve
 
+    public static final double maxSpeed = 2.13;
     // units m/s
-    public static final double SWERVE_MAX_SPEED = 2.13;
-    // units m/s
-    public static final double SWERVE_PRECISION_SPEED = 0.5;
-    // seconds; delay between heading correction and last heading input,
-    // allowing robot to continue its momentum before correcting
     public static double HEADING_TIME = 0.1;
 }

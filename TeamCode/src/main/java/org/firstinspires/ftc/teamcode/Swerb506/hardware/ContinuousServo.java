@@ -114,9 +114,7 @@ public class ContinuousServo extends HardwareDevice {
 
         double pid = controller.calculate(position, setpoint);
 
-//        if(controller.atSetpoint())
-//            device.setPower(0.0);
-//        else
+
         device.setPower(pid + (Math.abs(setpoint - position) >= 1.0 ? feedforward : 0) * Math.signum(pid));
     }
 
