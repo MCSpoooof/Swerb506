@@ -29,6 +29,11 @@ public enum RobotConfiguration {
             new ExpansionHub("Expansion Hub 2")
             .configureBulkCachingMode(LynxModule.BulkCachingMode.OFF)
     ),*/
+
+
+    //MUST UNCOMMENT WHEN USING THE EXPANSION HUB ^^^^
+
+
     DRIVE_FRONT_LEFT(
             new Motor("cm2")
             .configureDirection(DcMotorSimple.Direction.REVERSE)
