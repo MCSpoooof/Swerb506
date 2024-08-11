@@ -37,7 +37,7 @@ public class Automus extends RobotHardware {
                 new PIDConstants(3.0, 0.0, 0.0),
                 new PIDConstants(4.0, 0.0, 0.0),
                 0.012,
-                1.6,
+                2.13,
                 0.12
         );
 
