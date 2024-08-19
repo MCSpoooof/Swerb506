@@ -2,16 +2,14 @@ package org.firstinspires.ftc.teamcode.Swerb506.hardware;
 
 import com.acmerobotics.roadrunner.util.NanoClock;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-
 import org.firstinspires.ftc.teamcode.Swerb506.hardware.meta.HardwareDevice;
 import org.firstinspires.ftc.teamcode.Swerb506.hardware.meta.HardwareStatus;
 
 public class Encoder extends HardwareDevice {
 
-    private final static int CPS_STEP = 0x10000;
+    private static final int CPS_STEP = 0x10000;
     private DcMotorEx device;
     private NanoClock clock;
-
     private Direction direction = Direction.FORWARD;
 
     private int lastPosition;
@@ -24,7 +22,7 @@ public class Encoder extends HardwareDevice {
 
     @Override
     public void initialize(Object device) {
-        if(!getDeviceClass().isInstance(device)) {
+        if (!getDeviceClass().isInstance(device)) {
             setStatus(HardwareStatus.MISSING);
             return;
         }
@@ -47,10 +45,6 @@ public class Encoder extends HardwareDevice {
         return real;
     }
 
-    /**
-     * Allows you to set the direction of the counts and velocity without modifying the motor's direction state
-     * @param direction either reverse or forward depending on if encoder counts should be negated
-     */
     public Encoder setDirection(Direction direction) {
         this.direction = direction;
         return this;
@@ -61,7 +55,7 @@ public class Encoder extends HardwareDevice {
     }
 
     public int getCurrentPosition() {
-        if(getStatus().equals(HardwareStatus.MISSING)) return 0;
+        if (getStatus() == HardwareStatus.MISSING) return 0;
 
         int currentPosition = device.getCurrentPosition() * direction.getMultiplier();
         if (currentPosition != lastPosition) {
@@ -75,8 +69,7 @@ public class Encoder extends HardwareDevice {
     }
 
     public double getRawVelocity() {
-        if(getStatus().equals(HardwareStatus.MISSING)) return 0.0;
-
+        if (getStatus() == HardwareStatus.MISSING) return 0.0;
         return device.getVelocity() * direction.getMultiplier();
     }
 

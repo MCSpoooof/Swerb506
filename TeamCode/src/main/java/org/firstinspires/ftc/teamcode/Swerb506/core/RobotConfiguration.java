@@ -17,126 +17,142 @@ import org.firstinspires.ftc.teamcode.Swerb506.hardware.Servo;
 import org.firstinspires.ftc.teamcode.Swerb506.hardware.Webcam;
 import org.firstinspires.ftc.teamcode.Swerb506.hardware.meta.HardwareDevice;
 
+/**
+ * Enum to configure and retrieve hardware components for the robot.
+ */
 public enum RobotConfiguration {
+
+    // IMU sensor configuration
     IMU(
             new IMU("imu")
     ),
+
+    // Control Hub configuration
     CONTROL_HUB(
             new ExpansionHub("Control Hub")
-            .configureBulkCachingMode(LynxModule.BulkCachingMode.MANUAL)
+                    .configureBulkCachingMode(LynxModule.BulkCachingMode.MANUAL)
     ),
-    /*EXPANSION_HUB(
-            new ExpansionHub("Expansion Hub 2")
+
+    // Uncomment when using an additional Expansion Hub
+    /*
+    EXPANSION_HUB(
+        new ExpansionHub("Expansion Hub 2")
             .configureBulkCachingMode(LynxModule.BulkCachingMode.OFF)
-    ),*/
+    ),
+    */
 
-
-    //MUST UNCOMMENT WHEN USING THE EXPANSION HUB ^^^^
-
-
+    // Drive motors configuration
     DRIVE_FRONT_LEFT(
             new Motor("cm2")
-            .configureDirection(DcMotorSimple.Direction.REVERSE)
-            .configureZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE)
-            .configureRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
-            .setType(MotorTypes.DRIVE)
-            .configurePID(0, 0, 0)
+                    .configureDirection(DcMotorSimple.Direction.REVERSE)
+                    .configureZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE)
+                    .configureRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
+                    .setType(MotorTypes.DRIVE)
+                    .configurePID(0, 0, 0)
     ),
     DRIVE_FRONT_RIGHT(
             new Motor("cm0")
-            .configureDirection(DcMotorSimple.Direction.FORWARD)
-            .configureZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE)
-            .configureRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
-            .setType(MotorTypes.DRIVE)
-            .configurePID(0, 0, 0)
+                    .configureDirection(DcMotorSimple.Direction.FORWARD)
+                    .configureZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE)
+                    .configureRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
+                    .setType(MotorTypes.DRIVE)
+                    .configurePID(0, 0, 0)
     ),
     DRIVE_BACK_LEFT(
             new Motor("cm3")
-            .configureDirection(DcMotorSimple.Direction.REVERSE)
-            .configureZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE)
-            .configureRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
-            .setType(MotorTypes.DRIVE)
-            .configurePID(0, 0, 0)
+                    .configureDirection(DcMotorSimple.Direction.REVERSE)
+                    .configureZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE)
+                    .configureRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
+                    .setType(MotorTypes.DRIVE)
+                    .configurePID(0, 0, 0)
     ),
     DRIVE_BACK_RIGHT(
             new Motor("cm1")
-            .configureDirection(DcMotorSimple.Direction.FORWARD)
-            .configureZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE)
-            .configureRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
-            .setType(MotorTypes.DRIVE)
-            .configurePID(0, 0, 0)
+                    .configureDirection(DcMotorSimple.Direction.FORWARD)
+                    .configureZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE)
+                    .configureRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
+                    .setType(MotorTypes.DRIVE)
+                    .configurePID(0, 0, 0)
     ),
-    ///////////////////////
+
+    // Absolute encoders configuration
     ABSOLUTE_FRONT_LEFT(
             new AbsoluteEncoder("ca1")
-            .zero(231.27)
-            .setInverted(false)
+                    .zero(231.27)
+                    .setInverted(false)
     ),
     ABSOLUTE_FRONT_RIGHT(
             new AbsoluteEncoder("ca2")
-            .zero(359.23)
-            .setInverted(false)
+                    .zero(359.23)
+                    .setInverted(false)
     ),
     ABSOLUTE_BACK_LEFT(
             new AbsoluteEncoder("ca0")
-            .zero(100.8)
-            .setInverted(false)
+                    .zero(100.8)
+                    .setInverted(false)
     ),
     ABSOLUTE_BACK_RIGHT(
             new AbsoluteEncoder("ca3")
-            .zero(165.7)
-            .setInverted(false)
+                    .zero(165.7)
+                    .setInverted(false)
     ),
-    //////////////////////
+
+    // Continuous servos configuration
     ANGLE_FRONT_LEFT(
             new ContinuousServo("cs2")
-            .configureDirection(DcMotorSimple.Direction.FORWARD)
-            .configurePIDWrapping()
-            .configurePWMRange(AXON_CONTINUOUS_PWM)
-            .configurePIDF(0.01, 0.0, 0.0)
-            .configureFF(0.04)
-            .configureEncoder(ABSOLUTE_FRONT_LEFT.getAsAbsoluteEncoder())
+                    .configureDirection(DcMotorSimple.Direction.FORWARD)
+                    .configurePIDWrapping()
+                    .configurePWMRange(AXON_CONTINUOUS_PWM)
+                    .configurePIDF(0.01, 0.0, 0.0)
+                    .configureFF(0.04)
+                    .configureEncoder(ABSOLUTE_FRONT_LEFT.getAsAbsoluteEncoder())
     ),
     ANGLE_FRONT_RIGHT(
             new ContinuousServo("cs0")
-            .configureDirection(DcMotorSimple.Direction.FORWARD)
-            .configurePIDWrapping()
-            .configurePWMRange(AXON_CONTINUOUS_PWM)
-            .configurePIDF(0.01, 0.0, 0.0)
-            .configureFF(0.03)
-            .configureEncoder(ABSOLUTE_FRONT_RIGHT.getAsAbsoluteEncoder())
+                    .configureDirection(DcMotorSimple.Direction.FORWARD)
+                    .configurePIDWrapping()
+                    .configurePWMRange(AXON_CONTINUOUS_PWM)
+                    .configurePIDF(0.01, 0.0, 0.0)
+                    .configureFF(0.03)
+                    .configureEncoder(ABSOLUTE_FRONT_RIGHT.getAsAbsoluteEncoder())
     ),
     ANGLE_BACK_LEFT(
             new ContinuousServo("cs3")
-            .configureDirection(DcMotorSimple.Direction.FORWARD)
-            .configurePIDWrapping()
-            .configurePWMRange(AXON_CONTINUOUS_PWM)
-            .configurePIDF(0.01, 0.0, 0.0)
-            .configureFF(0.04)
-            .configureEncoder(ABSOLUTE_BACK_LEFT.getAsAbsoluteEncoder())
+                    .configureDirection(DcMotorSimple.Direction.FORWARD)
+                    .configurePIDWrapping()
+                    .configurePWMRange(AXON_CONTINUOUS_PWM)
+                    .configurePIDF(0.01, 0.0, 0.0)
+                    .configureFF(0.04)
+                    .configureEncoder(ABSOLUTE_BACK_LEFT.getAsAbsoluteEncoder())
     ),
     ANGLE_BACK_RIGHT(
             new ContinuousServo("cs1")
-            .configureDirection(DcMotorSimple.Direction.FORWARD)
-            .configurePIDWrapping()
-            .configurePWMRange(AXON_CONTINUOUS_PWM)
-            .configurePIDF(0.01, 0.0, 0.0)
-            .configureFF(0.05)
-            .configureEncoder(ABSOLUTE_BACK_RIGHT.getAsAbsoluteEncoder())
+                    .configureDirection(DcMotorSimple.Direction.FORWARD)
+                    .configurePIDWrapping()
+                    .configurePWMRange(AXON_CONTINUOUS_PWM)
+                    .configurePIDF(0.01, 0.0, 0.0)
+                    .configureFF(0.05)
+                    .configureEncoder(ABSOLUTE_BACK_RIGHT.getAsAbsoluteEncoder())
     ),
+
+    // Encoders for odometry configuration
     ODOMETRY_PARALLEL(
             new Encoder("cm3")
-            .setDirection(Encoder.Direction.REVERSE)
+                    .setDirection(Encoder.Direction.REVERSE)
     ),
     ODOMETRY_PERPENDICULAR(
             new Encoder("cm0")
-            .setDirection(Encoder.Direction.FORWARD)
+                    .setDirection(Encoder.Direction.FORWARD)
     );
-    /*WEBCAM(
-            new Webcam("cu0")
+
+    // Uncomment when using a webcam
+    /*
+    WEBCAM(
+        new Webcam("cu0")
             .configureCameraResolution(640, 480)
             .configureVisionProcessor(new SpikeDetectionProcessor())
-    );*/
+    );
+    */
 
     private final HardwareDevice device;
 
@@ -149,50 +165,48 @@ public enum RobotConfiguration {
     }
 
     public IMU getAsIMU() {
-        if(!(device instanceof IMU))
-            throw new IllegalArgumentException("Attempt to retrieve hardware component as incorrect type.");
+        ensureType(IMU.class);
         return (IMU) device;
     }
 
     public Motor getAsMotor() {
-        if(!(device instanceof Motor))
-            throw new IllegalArgumentException("Attempt to retrieve hardware component as incorrect type.");
+        ensureType(Motor.class);
         return (Motor) device;
     }
 
     public Servo getAsServo() {
-        if(!(device instanceof Servo))
-            throw new IllegalArgumentException("Attempt to retrieve hardware component as incorrect type.");
+        ensureType(Servo.class);
         return (Servo) device;
     }
 
     public ContinuousServo getAsContinuousServo() {
-        if(!(device instanceof ContinuousServo))
-            throw new IllegalArgumentException("Attempt to retrieve hardware component as incorrect type.");
+        ensureType(ContinuousServo.class);
         return (ContinuousServo) device;
     }
 
     public AbsoluteEncoder getAsAbsoluteEncoder() {
-        if(!(device instanceof AbsoluteEncoder))
-            throw new IllegalArgumentException("Attempt to retrieve hardware component as incorrect type.");
+        ensureType(AbsoluteEncoder.class);
         return (AbsoluteEncoder) device;
     }
 
     public ExpansionHub getAsExpansionHub() {
-        if(!(device instanceof ExpansionHub))
-            throw new IllegalArgumentException("Attempt to retrieve hardware component as incorrect type.");
+        ensureType(ExpansionHub.class);
         return (ExpansionHub) device;
     }
 
     public Encoder getAsEncoder() {
-        if(!(device instanceof Encoder))
-            throw new IllegalArgumentException("Attempt to retrieve hardware component as incorrect type.");
+        ensureType(Encoder.class);
         return (Encoder) device;
     }
-    
+
     public Webcam getAsWebcam() {
-        if(!(device instanceof Webcam))
-            throw new IllegalArgumentException("Attempt to retrieve hardware component as incorrect type.");
+        ensureType(Webcam.class);
         return (Webcam) device;
     }
-}
+
+    private <T extends HardwareDevice> void ensureType(Class<T> clazz) {
+        if (!clazz.isInstance(device)) {
+            throw new IllegalArgumentException("Attempt to retrieve hardware component as incorrect type.");
+        }
+    }
+    }

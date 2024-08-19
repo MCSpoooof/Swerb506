@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Swerb506.opmode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.Swerb506.core.RobotConfiguration;
+import org.firstinspires.ftc.teamcode.Swerb506.core.RobotConstants;
 import org.firstinspires.ftc.teamcode.Swerb506.core.RobotHardware;
 import org.firstinspires.ftc.teamcode.Swerb506.utility.math.ElapsedTimer;
 import org.firstinspires.ftc.teamcode.Swerb506.utility.math.geometry.Pose2d;
@@ -49,7 +50,7 @@ public class Automus extends RobotHardware {
                 new PIDConstants(3.0, 0.0, 0.0),
                 new PIDConstants(4.0, 0.0, 0.0),
                 0.012,
-                2.13,
+                RobotConstants.maxSpeed,
                 0.12
         );
 

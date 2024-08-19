@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Swerb506.hardware;
 
 import com.qualcomm.hardware.lynx.LynxModule;
-
 import org.firstinspires.ftc.teamcode.Swerb506.hardware.meta.HardwareDevice;
 import org.firstinspires.ftc.teamcode.Swerb506.hardware.meta.HardwareStatus;
 
@@ -19,7 +18,7 @@ public class ExpansionHub extends HardwareDevice {
 
     @Override
     public void initialize(Object device) {
-        if(!getDeviceClass().isInstance(device)) {
+        if (!getDeviceClass().isInstance(device)) {
             setStatus(HardwareStatus.MISSING);
             return;
         }
@@ -40,15 +39,14 @@ public class ExpansionHub extends HardwareDevice {
     }
 
     public void setBulkCachingMode(LynxModule.BulkCachingMode bulkCachingMode) {
-        if(getStatus().equals(HardwareStatus.MISSING)) return;
+        if (getStatus() == HardwareStatus.MISSING) return;
 
         this.bulkCachingMode = bulkCachingMode;
         device.setBulkCachingMode(bulkCachingMode);
     }
 
     public void clearBulkCache() {
-        if(getStatus().equals(HardwareStatus.MISSING)) return;
-
+        if (getStatus() == HardwareStatus.MISSING) return;
         device.clearBulkCache();
     }
 }

@@ -10,8 +10,9 @@ import org.firstinspires.ftc.teamcode.Swerb506.utility.math.geometry.Pose2d;
 import org.firstinspires.ftc.teamcode.Swerb506.utility.math.geometry.Translation2d;
 
 @Config
-@TeleOp(name= "TelePOP")
+@TeleOp(name = "TelePOP")
 public class TelePOP extends RobotHardware {
+
     public static boolean fieldRelative = true;
     public static boolean headingCorrection = false;
     public boolean slowMode = false;
@@ -21,21 +22,20 @@ public class TelePOP extends RobotHardware {
 
     public TelePOP() {
         stateMachine = new Executive.StateMachine<>(this);
-        stateMachine.update();
     }
 
     @Override
     public void init() {
         super.init();
         stateMachine.init();
-//Init things here
+        // Initialize additional components if needed
     }
 
     @Override
     public void init_loop() {
         super.init_loop();
         stateMachine.update();
-//Init more things here?
+        // Additional initialization if needed
     }
 
     @Override
@@ -58,39 +58,46 @@ public class TelePOP extends RobotHardware {
         public void update() {
             super.update();
 
+            // Control logic for resetting gyro and odometry
             if (primary.YOnce()) {
                 swerveDrive.zeroGyro();
                 swerveDrive.resetOdometry(new Pose2d());
             }
 
+            // Toggle field-relative mode
             if (primary.BOnce()) {
                 fieldRelative = !fieldRelative;
             }
 
-            if (primary.XOnce())
+            // Toggle heading correction
+            if (primary.XOnce()) {
                 headingCorrection = !headingCorrection;
+            }
 
+            // Set fixed heading for the robot
             if (primary.rightStickButtonOnce()) {
                 SwerveDrive.lastHeadingRadians = (3.0 * Math.PI) / 2.0;
                 SwerveDrive.updatedHeading = true;
             }
 
+            // Toggle slow mode
             if (primary.leftBumperOnce()) {
                 slowMode = !slowMode;
             }
 
-            if (!slowMode) {
-                speed = 1;
-            }
-                else {
-                    speed = 3;
-                }
+            // Adjust speed based on mode
+            speed = slowMode ? 0.3 : 1.0; // Assuming 0.3 is the slow mode multiplier
 
+            // Calculate velocities with cubic scaling for smoother control
             double xV = (Math.pow(-primary.left_stick_y, 3) * swerveControllerConfiguration.maxSpeed) / speed;
             double yV = (Math.pow(-primary.left_stick_x, 3) * swerveControllerConfiguration.maxSpeed) / speed;
             double thetaV = (Math.pow(-primary.right_stick_x, 3) * swerveControllerConfiguration.maxAngularVelocity) / speed;
+
+            // Drive the robot
             swerveDrive.drive(new Translation2d(xV, yV), thetaV, fieldRelative, true, headingCorrection);
             swerveDrive.updateOdometry();
+
+            // Telemetry updates
             telemetry.addData("Slow Mode", slowMode);
             telemetry.addData("Field Oriented", fieldRelative);
             telemetry.addData("Robot Heading", swerveDrive.getYaw().getDegrees());

@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.Swerb506.hardware;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.BNO055IMUImpl;
-
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.teamcode.Swerb506.hardware.meta.HardwareDevice;
@@ -15,11 +14,11 @@ import org.firstinspires.ftc.teamcode.Swerb506.utility.misc.BNO055IMUUtil;
 
 import java.util.Optional;
 
-//ToDo Add IMU axes order and signs as a constant in RobotConstants
-//ToDo Add configure & set methods for axes mapping
 public class IMU extends HardwareDevice {
 
     private BNO055IMUImpl device;
+    private Rotation3d offset = new Rotation3d();
+    private Rotation3d current = new Rotation3d();
 
     public IMU(String configName) {
         super(configName, BNO055IMUImpl.class);
@@ -27,26 +26,23 @@ public class IMU extends HardwareDevice {
 
     @Override
     public void initialize(Object device) {
-        if(!getDeviceClass().isInstance(device)) {
+        if (!getDeviceClass().isInstance(device)) {
             setStatus(HardwareStatus.MISSING);
             return;
         }
+
         this.device = (BNO055IMUImpl) device;
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
         this.device.initialize(parameters);
 
-        // If your hub is mounted vertically, remap the IMU axes so that the z-axis points
-        // upward (normal to the floor) using a command like the following:
+        // Remap IMU axes to match the robot's orientation
         BNO055IMUUtil.remapAxes(this.device, AxesOrder.XYZ, AxesSigns.NPN);
         setStatus(HardwareStatus.SUCCESS);
     }
 
-    private Rotation3d offset = new Rotation3d();
-    private Rotation3d current = new Rotation3d();
-
     public void update() {
-        if(getStatus().equals(HardwareStatus.MISSING)) return;
+        if (getStatus() == HardwareStatus.MISSING) return;
         org.firstinspires.ftc.robotcore.external.navigation.Quaternion q = device.getQuaternionOrientation();
         current = new Rotation3d(new Quaternion(q.w, q.x, q.y, q.z));
     }
@@ -64,14 +60,13 @@ public class IMU extends HardwareDevice {
     }
 
     public Optional<Translation3d> getAccel() {
-        if(getStatus().equals(HardwareStatus.MISSING)) return Optional.empty();
+        if (getStatus() == HardwareStatus.MISSING) return Optional.empty();
         Acceleration a = device.getAcceleration();
-        return Optional.of(
-                new Translation3d(a.xAccel, a.yAccel, a.zAccel).times(9.81));
+        return Optional.of(new Translation3d(a.xAccel, a.yAccel, a.zAccel).times(9.81));
     }
 
     public Double getXAngularVelocity() {
-        if(getStatus().equals(HardwareStatus.MISSING)) return 0.0;
+        if (getStatus() == HardwareStatus.MISSING) return 0.0;
         return (double) device.getAngularVelocity().xRotationRate;
     }
 }
