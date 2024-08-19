@@ -32,11 +32,26 @@ repositories {
 dependencies {
     implementation project(':FtcRobotController')
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
-    // https://mvnrepository.com/artifact/org.apache.commons/commons-math3
+
+    // Other dependencies
     implementation group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
-    implementation group:'com.opencsv', name: 'opencsv', version: '5.3'
-    implementation group:'org.yaml', name: 'snakeyaml', version: '1.21'
+    implementation group: 'com.opencsv', name: 'opencsv', version: '5.3'
+    implementation group: 'org.yaml', name: 'snakeyaml', version: '1.21'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     api "org.ejml:ejml-simple:0.41"
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+
+    // Updated JUnit and Hamcrest dependencies
+    testImplementation('junit:junit:4.13.2') {
+        exclude group: 'org.hamcrest', module: 'hamcrest-core'
+    }
+    testImplementation 'org.hamcrest:hamcrest-core:2.2'
+}
+
+// Force specific versions to resolve conflicts
+configurations.all {
+    resolutionStrategy {
+        force 'org.hamcrest:hamcrest-core:2.2'
+        force 'junit:junit:4.13.2'
+    }
 }
