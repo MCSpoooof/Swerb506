@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-@Autonomous(name="Pathplanner Test")
+@Autonomous(name="Automus")
 public class Automus extends RobotHardware {
 
     private PathPlannerPath path;
