@@ -11,7 +11,6 @@ import org.firstinspires.ftc.teamcode.Swerb506.utility.pathplanner.path.PathPlan
 import org.firstinspires.ftc.teamcode.Swerb506.utility.pathplanner.path.PathPlannerTrajectory;
 import org.firstinspires.ftc.teamcode.Swerb506.utility.autonomous.EventMarker;
 import org.firstinspires.ftc.teamcode.Swerb506.utility.autonomous.EventMarkerParser;
-import org.firstinspires.ftc.teamcode.Swerb506.opmode.autonomous.Events;
 import org.firstinspires.ftc.teamcode.Swerb506.utility.pathplanner.util.PIDConstants;
 
 import java.util.ArrayList;
