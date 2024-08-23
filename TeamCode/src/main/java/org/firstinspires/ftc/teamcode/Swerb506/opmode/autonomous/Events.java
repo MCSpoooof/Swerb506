@@ -6,22 +6,30 @@ import java.util.Map;
 public class Events {
     private final Map<String, Runnable> eventActions = new HashMap<>();
 
+    // Constructor to initialize event actions
     public Events() {
         // Initialize actions here
-        eventActions.put("event1", this::handleEvent1);
+        eventActions.put("swerve1", this::handleEvent1);
         eventActions.put("event2", this::handleEvent2);
-        // Add more events as needed
+
+        // Debug initialization
+        System.out.println("Initialized Events with " + eventActions.size() + " actions.");
     }
 
+    // Method to get the event actions map
     public Map<String, Runnable> getEventActions() {
         return eventActions;
     }
 
+    // Define the action for "swerve1" event
     private void handleEvent1() {
+        System.out.println("Handling event 1 (swerve1)");
         // Your code for Event 1
     }
 
+    // Define the action for "event2" event
     private void handleEvent2() {
+        System.out.println("Handling event 2 (event2)");
         // Your code for Event 2
     }
 }

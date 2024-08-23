@@ -1,50 +1,83 @@
 package org.firstinspires.ftc.teamcode.Swerb506.utility.autonomous;
 
-import android.content.Context;
-
+import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
+import org.firstinspires.ftc.teamcode.Swerb506.opmode.autonomous.Events;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EventMarkerParser {
 
-    private Context context;
-
-    public EventMarkerParser(Context context) {
-        this.context = context;
-    }
-
-    public List<EventMarker> parseEventMarkersFromJson(String jsonPath) {
-        List<EventMarker> markers = new ArrayList<>();
+    public List<EventMarker> parseEventMarkersFromPath(String fileName) {
+        List<EventMarker> eventMarkers = new ArrayList<>();
 
         try {
-            JSONParser parser = new JSONParser();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(context.getAssets().open(jsonPath)));
-            JSONObject jsonObject = (JSONObject) parser.parse(reader);
-            JSONArray eventMarkers = (JSONArray) jsonObject.get("eventMarkers");
+            // Use AppUtil to get the file in the settings directory
+            File file = AppUtil.getInstance().getSettingsFile(fileName + ".path");
 
-            for (Object markerObject : eventMarkers) {
-                JSONObject markerJson = (JSONObject) markerObject;
-                double position = ((Number) markerJson.get("waypointRelativePos")).doubleValue();
-                String name = (String) markerJson.get("name");
-                Runnable action = parseActionFromJson((JSONObject) markerJson.get("command"));
-                markers.add(new EventMarker(position, action, name));
+            if (!file.exists()) {
+                System.err.println("File not found: " + file.getAbsolutePath());
+                return eventMarkers;
             }
+
+            // Open the file
+            try (InputStream inputStream = new FileInputStream(file);
+                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+
+                StringBuilder fileContentBuilder = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    fileContentBuilder.append(line);
+                }
+
+                String fileContent = fileContentBuilder.toString();
+                JSONObject json = (JSONObject) new JSONParser().parse(fileContent);
+
+                JSONArray markersJson = (JSONArray) json.get("eventMarkers");
+                for (Object markerJson : markersJson) {
+                    EventMarker marker = fromJson((JSONObject) markerJson);
+                    if (marker != null) {
+                        eventMarkers.add(marker);
+                    }
+                }
+
+            } catch (Exception e) {
+                System.err.println("Error reading or parsing file: " + e.getMessage());
+                e.printStackTrace();
+            }
+
         } catch (Exception e) {
-            // Minimal logging for errors
+            System.err.println("Error accessing file: " + e.getMessage());
             e.printStackTrace();
         }
 
-        return markers;
+        return eventMarkers;
     }
 
-    private Runnable parseActionFromJson(JSONObject commandJson) {
-        String type = (String) commandJson.get("type");
-        return () -> {}; // Minimal action for efficiency
+    // Create an EventMarker object from JSON.
+    public EventMarker fromJson(JSONObject json) {
+        try {
+            double relativePosition = ((Number) json.get("relativePosition")).doubleValue();
+            String name = (String) json.get("name");
+            Runnable action = null;
+
+            // Assuming you have a way to map action names to Runnable instances.
+            // Placeholder for action mapping logic:
+            // action = ActionRegistry.getAction(name);
+
+            return new EventMarker(relativePosition, action, name);
+        } catch (Exception e) {
+            System.err.println("Error parsing EventMarker from JSON: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
     }
 }
