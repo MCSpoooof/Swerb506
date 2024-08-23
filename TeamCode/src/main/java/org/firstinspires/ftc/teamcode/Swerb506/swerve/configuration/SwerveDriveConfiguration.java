@@ -20,7 +20,7 @@ public class SwerveDriveConfiguration {
     /**
      * Invert the imu measurements.
      */
-    public boolean         invertedIMU = false;
+    public boolean         invertedIMU = true;
     /**
      * Max module speed in meters per second.
      */

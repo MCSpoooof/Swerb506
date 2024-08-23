@@ -41,38 +41,38 @@ public enum RobotConfiguration {
     ),
     */
 
-    // Drive motors configuration
+    // Drive motors configuration with PIDF
     DRIVE_FRONT_LEFT(
             new Motor("cm2")
                     .configureDirection(DcMotorSimple.Direction.REVERSE)
                     .configureZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE)
-                    .configureRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
+                    .configureRunMode(DcMotor.RunMode.RUN_USING_ENCODER)
                     .setType(MotorTypes.DRIVE)
-                    .configurePID(0, 0, 0)
+                    .configurePIDF(1.0, 0.0, 0.0, 0.0)
     ),
     DRIVE_FRONT_RIGHT(
             new Motor("cm0")
                     .configureDirection(DcMotorSimple.Direction.FORWARD)
                     .configureZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE)
-                    .configureRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
+                    .configureRunMode(DcMotor.RunMode.RUN_USING_ENCODER)
                     .setType(MotorTypes.DRIVE)
-                    .configurePID(0, 0, 0)
+                    .configurePIDF(1.0, 0.0, 0.0, 0.0)
     ),
     DRIVE_BACK_LEFT(
             new Motor("cm3")
                     .configureDirection(DcMotorSimple.Direction.REVERSE)
                     .configureZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE)
-                    .configureRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
+                    .configureRunMode(DcMotor.RunMode.RUN_USING_ENCODER)
                     .setType(MotorTypes.DRIVE)
-                    .configurePID(0, 0, 0)
+                    .configurePIDF(1.0, 0.0, 0.0, 0.0)
     ),
     DRIVE_BACK_RIGHT(
             new Motor("cm1")
                     .configureDirection(DcMotorSimple.Direction.FORWARD)
                     .configureZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE)
-                    .configureRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
+                    .configureRunMode(DcMotor.RunMode.RUN_USING_ENCODER)
                     .setType(MotorTypes.DRIVE)
-                    .configurePID(0, 0, 0)
+                    .configurePIDF(1.0, 0.0, 0.0, 0.0)
     ),
 
     // Absolute encoders configuration
@@ -204,9 +204,9 @@ public enum RobotConfiguration {
         return (Webcam) device;
     }
 
-    private <T extends HardwareDevice> void ensureType(Class<T> clazz) {
-        if (!clazz.isInstance(device)) {
-            throw new IllegalArgumentException("Attempt to retrieve hardware component as incorrect type.");
+    private void ensureType(Class<?> type) {
+        if (!type.isInstance(device)) {
+            throw new IllegalStateException("Device is not of type " + type.getSimpleName());
         }
     }
-    }
+}

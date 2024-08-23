@@ -19,11 +19,6 @@ public final class RobotConstants {
     public static final PwmControl.PwmRange AXON_CONTINUOUS_PWM =
             new PwmControl.PwmRange(500, 2500, 5000);
 
-    public static final PwmControl.PwmRange AXON_PWM =
-            new PwmControl.PwmRange(520, 2480, 5000);
-
-    public static PIDFController slideController = new PIDFController(new PIDCoefficients(0.01, 0.0, 0.0001), 0, 0, 0.05);
-
     public static final double MOTOR_CACHE_TOLERANCE = 0.02;
 
     //ToDo Incorporate proper maximum speed limiting on swerve

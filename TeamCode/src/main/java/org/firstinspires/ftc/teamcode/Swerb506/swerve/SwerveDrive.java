@@ -441,7 +441,7 @@ public class SwerveDrive {
      */
     public void zeroGyro() {
         imu.update();
-        imu.setOffset(imu.getRawRotation3d().plus(new Rotation3d(0, 0, 180)));
+        imu.setOffset(imu.getRawRotation3d());
         swerveController.lastAngleScalar = 0;
         lastHeadingRadians = 0;
         resetOdometry(new Pose2d(getPose().getTranslation(), new Rotation2d()));
@@ -453,9 +453,15 @@ public class SwerveDrive {
      * @return The yaw as a {@link Rotation2d} angle
      */
     public Rotation2d getYaw() {
-        double rotation = swerveDriveConfiguration.invertedIMU
-                ? imu.getRotation3d().unaryMinus().getX() + Math.PI
-                : imu.getRotation3d().getX();
+        // Get the raw rotation from the IMU
+        double rotation = imu.getRotation3d().getX();
+
+        // If the IMU is inverted, flip the angle
+        if (swerveDriveConfiguration.invertedIMU) {
+            rotation = -rotation; // Invert the rotation direction
+        }
+
+        // Create a Rotation2d from the adjusted angle
         return Rotation2d.fromRadians(rotation < 0.0 ? rotation + 2 * Math.PI : rotation);
     }
 

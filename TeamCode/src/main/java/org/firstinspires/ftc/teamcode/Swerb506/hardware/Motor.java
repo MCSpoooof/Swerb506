@@ -2,7 +2,9 @@ package org.firstinspires.ftc.teamcode.Swerb506.hardware;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DcMotorSimple.Direction;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.Swerb506.hardware.meta.HardwareDevice;
@@ -13,7 +15,7 @@ import org.firstinspires.ftc.teamcode.Swerb506.utility.math.controller.PIDContro
 
 public class Motor extends HardwareDevice {
     private DcMotorEx device;
-    private DcMotor.Direction direction = Direction.FORWARD;
+    private DcMotorSimple.Direction direction = Direction.FORWARD;
     private DcMotor.ZeroPowerBehavior zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE;
     private DcMotor.RunMode runMode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
     private MotorTypes type = MotorTypes.OTHER;
@@ -27,24 +29,27 @@ public class Motor extends HardwareDevice {
 
     public Motor(String configName, PIDFConfig pidfConfig) {
         this(configName);
-        configurePID(pidfConfig.p, pidfConfig.i, pidfConfig.d);
+        configurePIDF(pidfConfig.p, pidfConfig.i, pidfConfig.d, pidfConfig.f);
         setPIDTolerance(1.0);
     }
 
     @Override
     public void initialize(Object device) {
-        if(!getDeviceClass().isInstance(device)) {
+        if (!getDeviceClass().isInstance(device)) {
             setStatus(HardwareStatus.MISSING);
             return;
         }
-        lastPower = 2;
         this.device = (DcMotorEx) device;
         this.device.setZeroPowerBehavior(zeroPowerBehavior);
         this.device.setDirection(direction);
         this.device.setMode(runMode);
         setStatus(HardwareStatus.SUCCESS);
     }
-    public Motor configurePID(double p, double i, double d) {
+
+    public Motor configurePIDF(double p, double i, double d, double f) {
+        if (device != null) {
+            device.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(p, i, d, f));
+        }
         controller.setP(p);
         controller.setI(i);
         controller.setD(d);
@@ -59,16 +64,25 @@ public class Motor extends HardwareDevice {
 
     public Motor configureZeroPowerBehavior(DcMotor.ZeroPowerBehavior zeroPowerBehavior) {
         this.zeroPowerBehavior = zeroPowerBehavior;
+        if (device != null) {
+            device.setZeroPowerBehavior(zeroPowerBehavior);
+        }
         return this;
     }
 
     public Motor configureDirection(DcMotor.Direction direction) {
         this.direction = direction;
+        if (device != null) {
+            device.setDirection(direction);
+        }
         return this;
     }
 
     public Motor configureRunMode(DcMotor.RunMode runMode) {
         this.runMode = runMode;
+        if (device != null) {
+            device.setMode(runMode);
+        }
         return this;
     }
 
@@ -84,42 +98,25 @@ public class Motor extends HardwareDevice {
         return type;
     }
 
-    public void setZeroPowerBehavior(DcMotor.ZeroPowerBehavior zeroPowerBehavior) {
-        if(getStatus().equals(HardwareStatus.MISSING)) return;
-        this.zeroPowerBehavior = zeroPowerBehavior;
-        this.device.setZeroPowerBehavior(zeroPowerBehavior);
-    }
-
-    public void setDirection(DcMotor.Direction direction) {
-        if(getStatus().equals(HardwareStatus.MISSING)) return;
-        this.direction = direction;
-        this.device.setDirection(direction);
-    }
-
-    public void setRunMode(DcMotor.RunMode runMode) {
-        if(getStatus().equals(HardwareStatus.MISSING)) return;
-        this.runMode = runMode;
-        this.device.setMode(runMode);
-    }
-
     public Motor setType(MotorTypes type) {
         this.type = type;
         return this;
     }
 
     public double getPower() {
-        if (getStatus().equals(HardwareStatus.MISSING)) return 0;
         return lastPower;
     }
 
     public void setPower(double power) {
-        if(getStatus().equals(HardwareStatus.MISSING) || Math.abs(power - lastPower) < RobotConstants.MOTOR_CACHE_TOLERANCE) return;
+        if (getStatus().equals(HardwareStatus.MISSING) || Math.abs(power - lastPower) < RobotConstants.MOTOR_CACHE_TOLERANCE) return;
         lastPower = power;
-        device.setPower(power);
+        if (device != null) {
+            device.setPower(power);
+        }
     }
 
     public void setReference(double setpoint) {
-        setReference(setpoint, getEncoderValue(),0.0);
+        setReference(setpoint, getEncoderValue(), 0.0);
     }
 
     public void setReference(double setpoint, double measurement) {
@@ -128,7 +125,8 @@ public class Motor extends HardwareDevice {
 
     public void setReference(double setpoint, double measurement, double feedforward) {
         if (getStatus().equals(HardwareStatus.MISSING)) return;
-        setPower(controller.calculate(measurement, setpoint) + feedforward);
+        double pidOutput = controller.calculate(measurement, setpoint);
+        setPower(pidOutput + feedforward);
     }
 
     public void setEncoderPositionOffset(int offset) {
@@ -136,22 +134,18 @@ public class Motor extends HardwareDevice {
     }
 
     public int getRawEncoderValue() {
-        if (getStatus().equals(HardwareStatus.MISSING)) return 0;
-        return device.getCurrentPosition();
+        return device != null ? device.getCurrentPosition() : 0;
     }
 
     public int getEncoderValue() {
-        if (getStatus().equals(HardwareStatus.MISSING)) return 0;
-        return device.getCurrentPosition() - offset;
+        return device != null ? device.getCurrentPosition() - offset : 0;
     }
 
     public double getVelocity() {
-        if (getStatus().equals(HardwareStatus.MISSING)) return 0.0;
-        return device.getVelocity();
+        return device != null ? device.getVelocity() : 0.0;
     }
 
     public double getCurrent() {
-        if (getStatus().equals(HardwareStatus.MISSING)) return 0.0;
-        return device.getCurrent(CurrentUnit.AMPS);
+        return device != null ? device.getCurrent(CurrentUnit.AMPS) : 0.0;
     }
 }
