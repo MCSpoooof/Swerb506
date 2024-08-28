@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,12 +69,17 @@ public class EventMarkerParser {
         try {
             double relativePosition = ((Number) json.get("relativePosition")).doubleValue();
             String name = (String) json.get("name");
-            Runnable action = null;
 
             // Assuming you have a way to map action names to Runnable instances.
             // Placeholder for action mapping logic:
-            // action = ActionRegistry.getAction(name);
-
+            // Runnable action = eventRegistry.getEventActions().get(name);
+            Runnable action = () -> {
+                try {
+                    Events.class.getMethod(name).invoke(null);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            };
             return new EventMarker(relativePosition, action, name);
         } catch (Exception e) {
             System.err.println("Error parsing EventMarker from JSON: " + e.getMessage());

@@ -34,22 +34,4 @@ public class EventMarker {
         }
     }
 
-    // Factory method to create an EventMarker from JSON
-    public static EventMarker fromJson(JSONObject json, Events eventRegistry) {
-        try {
-            double relativePosition = ((Number) json.get("relativePosition")).doubleValue();
-            String name = (String) json.get("name");
-            Runnable action = eventRegistry.getEventActions().get(name);
-
-            if (action == null) {
-                System.err.println("No action found for event: " + name);
-            }
-
-            return new EventMarker(relativePosition, action, name);
-        } catch (Exception e) {
-            System.err.println("Error creating EventMarker from JSON: " + e.getMessage());
-            e.printStackTrace();
-            return null;
-        }
-    }
 }

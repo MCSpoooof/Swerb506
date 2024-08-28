@@ -33,7 +33,6 @@ public class Automus extends RobotHardware {
     private boolean hasRun = false;
     private boolean finishedDriving = false;
     private ElapsedTimer elapsedTimer = new ElapsedTimer();
-    private List<Double> eventTriggerTimes = new ArrayList<>();
     private double lastEventTime = -1;
 
     private Events events = new Events(); // Initialize your Events class
@@ -63,8 +62,8 @@ public class Automus extends RobotHardware {
             System.out.println("Using manual event markers.");
             eventMarkers.clear(); // Clear any loaded markers
             // Add manual event markers with actions
-            eventMarkers.add(new EventMarker(0.15, events.getEventActions().get("swerve1"), "swerve1"));
-            eventMarkers.add(new EventMarker(1.0, events.getEventActions().get("event2"), "event2"));
+            eventMarkers.add(new EventMarker(0.15, Events::swerve1, "swerve1"));
+            eventMarkers.add(new EventMarker(1.0, Events::event2, "event2"));
         } else {
             // Load event markers from path file
             try {
@@ -79,14 +78,6 @@ public class Automus extends RobotHardware {
                 System.out.println("Error loading event markers from path file: " + e.getMessage());
                 e.printStackTrace();
                 eventMarkers.clear(); // Ensure list is empty if loading fails
-            }
-        }
-
-        // Filter and store trigger times for target events
-        eventTriggerTimes.clear();
-        for (EventMarker marker : eventMarkers) {
-            if (events.getEventActions().containsKey(marker.getName())) {
-                eventTriggerTimes.add(marker.getRelativePosition());
             }
         }
 
@@ -121,14 +112,11 @@ public class Automus extends RobotHardware {
         PathPlannerTrajectory.State targetState = trajectory.sample(currentTime);
 
         // Handle events
-        for (Double triggerTime : eventTriggerTimes) {
-            if (Math.abs(currentTime - triggerTime) < 0.1 && lastEventTime < triggerTime) {
-                for (EventMarker marker : eventMarkers) {
-                    if (Math.abs(marker.getRelativePosition() - triggerTime) < 0.1) {
-                        marker.execute(); // Use the execute method of EventMarker
-                    }
-                }
-                lastEventTime = triggerTime;
+        for (EventMarker m : eventMarkers){
+            double trigger = m.getRelativePosition();
+            if (Math.abs(currentTime - trigger) < 0.1 && trigger > lastEventTime) { // search for the trigger time that is near the current time
+                m.execute(); // execute runnable
+                lastEventTime = trigger;
             }
         }
 
