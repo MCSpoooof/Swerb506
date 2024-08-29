@@ -46,7 +46,7 @@ public enum RobotConfiguration {
             new Motor("cm2")
                     .configureDirection(DcMotorSimple.Direction.REVERSE)
                     .configureZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE)
-                    .configureRunMode(DcMotor.RunMode.RUN_USING_ENCODER)
+                    .configureRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
                     .setType(MotorTypes.DRIVE)
                     .configurePIDF(1.0, 0.0, 0.0, 0.0)
     ),
@@ -54,7 +54,7 @@ public enum RobotConfiguration {
             new Motor("cm0")
                     .configureDirection(DcMotorSimple.Direction.FORWARD)
                     .configureZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE)
-                    .configureRunMode(DcMotor.RunMode.RUN_USING_ENCODER)
+                    .configureRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
                     .setType(MotorTypes.DRIVE)
                     .configurePIDF(1.0, 0.0, 0.0, 0.0)
     ),
@@ -62,7 +62,7 @@ public enum RobotConfiguration {
             new Motor("cm3")
                     .configureDirection(DcMotorSimple.Direction.REVERSE)
                     .configureZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE)
-                    .configureRunMode(DcMotor.RunMode.RUN_USING_ENCODER)
+                    .configureRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
                     .setType(MotorTypes.DRIVE)
                     .configurePIDF(1.0, 0.0, 0.0, 0.0)
     ),
@@ -70,7 +70,7 @@ public enum RobotConfiguration {
             new Motor("cm1")
                     .configureDirection(DcMotorSimple.Direction.FORWARD)
                     .configureZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE)
-                    .configureRunMode(DcMotor.RunMode.RUN_USING_ENCODER)
+                    .configureRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
                     .setType(MotorTypes.DRIVE)
                     .configurePIDF(1.0, 0.0, 0.0, 0.0)
     ),
