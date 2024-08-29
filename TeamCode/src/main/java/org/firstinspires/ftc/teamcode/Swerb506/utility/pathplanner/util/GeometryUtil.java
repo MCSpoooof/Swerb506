@@ -9,8 +9,8 @@ public class GeometryUtil {
      * Interpolate between two doubles
      *
      * @param startVal Start value
-     * @param endVal End value
-     * @param t Interpolation factor (0.0-1.0)
+     * @param endVal   End value
+     * @param t        Interpolation factor (0.0-1.0)
      * @return Interpolated value
      */
     public static double doubleLerp(double startVal, double endVal, double t) {
@@ -21,8 +21,8 @@ public class GeometryUtil {
      * Interpolate between two Rotation2ds
      *
      * @param startVal Start value
-     * @param endVal End value
-     * @param t Interpolation factor (0.0-1.0)
+     * @param endVal   End value
+     * @param t        Interpolation factor (0.0-1.0)
      * @return Interpolated value
      */
     public static Rotation2d rotationLerp(Rotation2d startVal, Rotation2d endVal, double t) {
@@ -95,5 +95,17 @@ public class GeometryUtil {
         double p = (ab + bc + ac) / 2;
         double area = Math.sqrt(Math.abs(p * (p - ab) * (p - bc) * (p - ac)));
         return sign * (ab * bc * ac) / (4 * area);
+    }
+
+    /**
+     * Interpolates between two Translation2d positions.
+     *
+     * @param start Initial Translation2d position
+     * @param end Final Translation2d position
+     * @param t Interpolation factor (0.0 to 1.0)
+     * @return Interpolated Translation2d position
+     */
+    public static Translation2d interpolate(Translation2d start, Translation2d end, double t) {
+        return translationLerp(start, end, t);
     }
 }

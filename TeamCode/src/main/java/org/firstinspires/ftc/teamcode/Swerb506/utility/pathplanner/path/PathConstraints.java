@@ -13,6 +13,14 @@ public class PathConstraints {
   private final double maxAngularAccelerationRpsSq;
 
   /**
+   * Default constructor with no parameters.
+   * Sets all constraints to 0.
+   */
+  public PathConstraints() {
+    this(0.0, 0.0, 0.0, 0.0);
+  }
+
+  /**
    * Create a new path constraints object
    *
    * @param maxVelocityMps Max linear velocity (M/S)
@@ -21,10 +29,10 @@ public class PathConstraints {
    * @param maxAngularAccelerationRpsSq Max angular acceleration (Rad/S^2)
    */
   public PathConstraints(
-      double maxVelocityMps,
-      double maxAccelerationMpsSq,
-      double maxAngularVelocityRps,
-      double maxAngularAccelerationRpsSq) {
+          double maxVelocityMps,
+          double maxAccelerationMpsSq,
+          double maxAngularVelocityRps,
+          double maxAngularAccelerationRpsSq) {
     this.maxVelocityMps = maxVelocityMps;
     this.maxAccelerationMpsSq = maxAccelerationMpsSq;
     this.maxAngularVelocityRps = maxAngularVelocityRps;
@@ -42,15 +50,15 @@ public class PathConstraints {
     double maxVel = ((Number) constraintsJson.get("maxVelocity")).doubleValue();
     double maxAccel = ((Number) constraintsJson.get("maxAcceleration")).doubleValue();
     double maxAngularVel =
-        ((Number) constraintsJson.get("maxAngularVelocity")).doubleValue(); // Degrees
+            ((Number) constraintsJson.get("maxAngularVelocity")).doubleValue(); // Degrees
     double maxAngularAccel =
-        ((Number) constraintsJson.get("maxAngularAcceleration")).doubleValue(); // Degrees
+            ((Number) constraintsJson.get("maxAngularAcceleration")).doubleValue(); // Degrees
 
     return new PathConstraints(
-        maxVel,
-        maxAccel,
-        Units.degreesToRadians(maxAngularVel),
-        Units.degreesToRadians(maxAngularAccel));
+            maxVel,
+            maxAccel,
+            Units.degreesToRadians(maxAngularVel),
+            Units.degreesToRadians(maxAngularAccel));
   }
 
   /**
@@ -95,28 +103,53 @@ public class PathConstraints {
     if (o == null || getClass() != o.getClass()) return false;
     PathConstraints that = (PathConstraints) o;
     return Math.abs(that.maxVelocityMps - maxVelocityMps) < 1E-3
-        && Math.abs(that.maxAccelerationMpsSq - maxAccelerationMpsSq) < 1E-3
-        && Math.abs(that.maxAngularVelocityRps - maxAngularVelocityRps) < 1E-3
-        && Math.abs(that.maxAngularAccelerationRpsSq - maxAngularAccelerationRpsSq) < 1E-3;
+            && Math.abs(that.maxAccelerationMpsSq - maxAccelerationMpsSq) < 1E-3
+            && Math.abs(that.maxAngularVelocityRps - maxAngularVelocityRps) < 1E-3
+            && Math.abs(that.maxAngularAccelerationRpsSq - maxAngularAccelerationRpsSq) < 1E-3;
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-        maxVelocityMps, maxAccelerationMpsSq, maxAngularVelocityRps, maxAngularAccelerationRpsSq);
+            maxVelocityMps, maxAccelerationMpsSq, maxAngularVelocityRps, maxAngularAccelerationRpsSq);
   }
 
   @Override
   public String toString() {
     return "PathConstraints{"
-        + "maxVelocityMps="
-        + maxVelocityMps
-        + ", maxAccelerationMpsSq="
-        + maxAccelerationMpsSq
-        + ", maxAngularVelocityRps="
-        + maxAngularVelocityRps
-        + ", maxAngularAccelerationRpsSq="
-        + maxAngularAccelerationRpsSq
-        + '}';
+            + "maxVelocityMps="
+            + maxVelocityMps
+            + ", maxAccelerationMpsSq="
+            + maxAccelerationMpsSq
+            + ", maxAngularVelocityRps="
+            + maxAngularVelocityRps
+            + ", maxAngularAccelerationRpsSq="
+            + maxAngularAccelerationRpsSq
+            + '}';
+  }
+
+  /**
+   * Interpolates between this PathConstraints object and another one.
+   *
+   * @param other The other PathConstraints to interpolate with.
+   * @param t The interpolation factor (0.0 - 1.0)
+   * @return A new PathConstraints object representing the interpolated values.
+   */
+  public PathConstraints interpolate(PathConstraints other, double t) {
+    double interpolatedMaxVelocity =
+            this.maxVelocityMps + t * (other.maxVelocityMps - this.maxVelocityMps);
+    double interpolatedMaxAcceleration =
+            this.maxAccelerationMpsSq + t * (other.maxAccelerationMpsSq - this.maxAccelerationMpsSq);
+    double interpolatedMaxAngularVelocity =
+            this.maxAngularVelocityRps + t * (other.maxAngularVelocityRps - this.maxAngularVelocityRps);
+    double interpolatedMaxAngularAcceleration =
+            this.maxAngularAccelerationRpsSq
+                    + t * (other.maxAngularAccelerationRpsSq - this.maxAngularAccelerationRpsSq);
+
+    return new PathConstraints(
+            interpolatedMaxVelocity,
+            interpolatedMaxAcceleration,
+            interpolatedMaxAngularVelocity,
+            interpolatedMaxAngularAcceleration);
   }
 }
