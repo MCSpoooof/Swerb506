@@ -35,7 +35,6 @@ public class Automus extends RobotHardware {
     private ElapsedTimer elapsedTimer = new ElapsedTimer();
     private double lastEventTime = -1;
 
-    private Events events = new Events(); // Initialize your Events class
     private boolean useManualEventMarkers = false; // Variable to control manual event markers
 
     @Override
@@ -61,7 +60,7 @@ public class Automus extends RobotHardware {
             // Use manual event markers
             System.out.println("Using manual event markers.");
             eventMarkers.clear(); // Clear any loaded markers
-            // Add manual event markers with actions
+            // Add manual event markers with actions from Events
             eventMarkers.add(new EventMarker(0.15, Events::swerve1, "swerve1"));
             eventMarkers.add(new EventMarker(1.0, Events::event2, "event2"));
         } else {
