@@ -1,8 +1,9 @@
 package org.firstinspires.ftc.teamcode.Swerb506.opmode.teleop;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
 import org.firstinspires.ftc.teamcode.Swerb506.core.RobotConfiguration;
 import org.firstinspires.ftc.teamcode.Swerb506.core.RobotHardware;
 import org.firstinspires.ftc.teamcode.Swerb506.hardware.AbsoluteEncoder;
@@ -12,18 +13,14 @@ import org.firstinspires.ftc.teamcode.Swerb506.hardware.meta.HardwareDevice;
 import org.firstinspires.ftc.teamcode.Swerb506.utility.math.ElapsedTimer;
 import org.firstinspires.ftc.teamcode.Swerb506.utility.math.geometry.Translation2d;
 
-
-
 @Config
 @TeleOp(name = "Swerve Tuning", group = "E")
 public class SwerveTuning extends RobotHardware {
-    public static double
-            fLOffset = 0.0, fROffset = 0.0, bLOffset = 0.0, bROffset = 0.0;
-
+    public static double fLOffset = 0.0, fROffset = 0.0, bLOffset = 0.0, bROffset = 0.0;
     public static TuneState state = TuneState.DRIVE;
     public static WheelPosition angleWheel = WheelPosition.FRONT_LEFT;
 
-    public static double aP = 0.08, aI = 0.0, aD = 0.0, aFF = 0.0, angleSetpointStart = 0.0, angleSetpointEnd = 90.0, kStatic = 0.0;
+    public static double aP = 0.0, aI = 0.0, aD = 0.0, aFF = 0.0, angleSetpointStart = 0.0, angleSetpointEnd = 90.0, kStatic = 0.0;
     private double prevAP = aP, prevAI = aI, prevAD = aD, prevAFF = aFF;
     private boolean reverse = false;
     private ElapsedTimer changeDirection;
@@ -32,7 +29,12 @@ public class SwerveTuning extends RobotHardware {
     public static boolean precision = false;
     private double precisionMode = 0.35;
 
-    enum WheelPosition{
+    private AbsoluteEncoder frontLeft, frontRight, backLeft, backRight;
+    private ContinuousServo fL, fR, bL, bR;
+
+    private FtcDashboard dashboard = FtcDashboard.getInstance();
+
+    enum WheelPosition {
         FRONT_LEFT,
         FRONT_RIGHT,
         BACK_LEFT,
@@ -48,8 +50,6 @@ public class SwerveTuning extends RobotHardware {
         SINGLE_MOTOR,
         kStatic
     }
-    private AbsoluteEncoder frontLeft, frontRight, backLeft, backRight;
-    private ContinuousServo fL, fR, bL, bR;
 
     @Override
     public void init() {
@@ -64,7 +64,6 @@ public class SwerveTuning extends RobotHardware {
         bL = RobotConfiguration.ANGLE_BACK_LEFT.getAsContinuousServo();
         bR = RobotConfiguration.ANGLE_BACK_RIGHT.getAsContinuousServo();
 
-//        swerveDrive.setMaximumSpeed(1.3);
         changeDirection = new ElapsedTimer();
         changeDirection.reset();
     }
@@ -72,19 +71,22 @@ public class SwerveTuning extends RobotHardware {
     @Override
     public void loop() {
         super.loop();
-        switch(state) {
+
+        TelemetryPacket packet = new TelemetryPacket(); // Create the packet for FTC Dashboard
+
+        switch (state) {
             case OFFSET:
                 frontLeft.zero(fLOffset);
                 frontRight.zero(fROffset);
                 backLeft.zero(bLOffset);
                 backRight.zero(bROffset);
 
-                for(RobotConfiguration configuration : RobotConfiguration.values()) {
+                for (RobotConfiguration configuration : RobotConfiguration.values()) {
                     HardwareDevice device = configuration.getAsHardwareDevice();
-                    if(device instanceof AbsoluteEncoder)
+                    if (device instanceof AbsoluteEncoder)
                         telemetry.addData(configuration.name() + " Abs", ((AbsoluteEncoder) device).getCurrentPosition());
-
                 }
+                break;
             case DRIVE:
                 double xVelocity;
                 double yVelocity;
@@ -107,7 +109,7 @@ public class SwerveTuning extends RobotHardware {
                 swerveDrive.drive(new Translation2d(xVelocity, yVelocity), angVelocity, false, true);
                 break;
             case ANGLE_PID:
-                if(prevAP != aP || prevAI != aI || prevAD != aD || prevAFF != aFF) {
+                if (prevAP != aP || prevAI != aI || prevAD != aD || prevAFF != aFF) {
                     fL.configurePIDF(aP, aI, aD, aFF);
                     fR.configurePIDF(aP, aI, aD, aFF);
                     bL.configurePIDF(aP, aI, aD, aFF);
@@ -118,7 +120,6 @@ public class SwerveTuning extends RobotHardware {
                     prevAFF = aFF;
                     index++;
                 }
-
 
                 double xVelocity$ = -primary.left_stick_y * swerveControllerConfiguration.maxSpeed;
                 double yVelocity$ = -primary.left_stick_x * swerveControllerConfiguration.maxSpeed;
@@ -144,14 +145,14 @@ public class SwerveTuning extends RobotHardware {
                 }
                 servo.configurePIDF(aP, aI, aD);
 
-                if(reverse) {
-                    if(changeDirection.seconds() > changeDirectionTime) {
+                if (reverse) {
+                    if (changeDirection.seconds() > changeDirectionTime) {
                         changeDirection.reset();
                         reverse = false;
                     }
                     servo.setReference(angleSetpointStart, aFF);
                 } else {
-                    if(changeDirection.seconds() > changeDirectionTime) {
+                    if (changeDirection.seconds() > changeDirectionTime) {
                         changeDirection.reset();
                         reverse = true;
                     }
@@ -194,6 +195,17 @@ public class SwerveTuning extends RobotHardware {
                 s.setPower(kStatic);
                 break;
         }
+
+        // Add the position values to the packet
+        packet.put("Front Left Position", frontLeft.getCurrentPosition());
+        packet.put("Front Right Position", frontRight.getCurrentPosition());
+        packet.put("Back Left Position", backLeft.getCurrentPosition());
+        packet.put("Back Right Position", backRight.getCurrentPosition());
+
+        // Send the packet to the dashboard
+        dashboard.sendTelemetryPacket(packet);
+
+        // Continue displaying the data on the telemetry screen as well
         telemetry.addData("Front Left Position", frontLeft.getCurrentPosition());
         telemetry.addData("Front Right Position", frontRight.getCurrentPosition());
         telemetry.addData("Back Left Position", backLeft.getCurrentPosition());

@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Swerb506.swerve.configuration.SwerveModule
 public final class RobotConstants {
     public static final SwerveModulePhysicalCharacteristics SWERVE_MODULE_PHYSICAL_CHARACTERISTICS =
             new SwerveModulePhysicalCharacteristics(
-            8.4, 1.0, 0.06, 1.1,
+            8.56, 1.0, 0.06, 1.1,
             12.0, 20, 20, 0.25,
             0.25, 1, 1, 0.0
     );
@@ -23,7 +23,7 @@ public final class RobotConstants {
 
     //ToDo Incorporate proper maximum speed limiting on swerve
 
-    public static final double maxSpeed = 2.13;
+    public static final double maxSpeed = 2.152;
     // units m/s
     public static double HEADING_TIME = 0.1;
 }

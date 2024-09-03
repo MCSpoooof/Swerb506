@@ -48,7 +48,7 @@ public enum RobotConfiguration {
                     .configureZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE)
                     .configureRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
                     .setType(MotorTypes.DRIVE)
-                    .configurePIDF(0.0, 0.0, 0.0, 0.0)
+                    .configurePIDF(.6, 0.0, 0.0, 0.0)
     ),
     DRIVE_FRONT_RIGHT(
             new Motor("cm2")
@@ -56,7 +56,7 @@ public enum RobotConfiguration {
                     .configureZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE)
                     .configureRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
                     .setType(MotorTypes.DRIVE)
-                    .configurePIDF(0.0, 0.0, 0.0, 0.0)
+                    .configurePIDF(.6, 0.0, 0.0, 0.0)
     ),
     DRIVE_BACK_LEFT(
             new Motor("cm1")
@@ -64,7 +64,7 @@ public enum RobotConfiguration {
                     .configureZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE)
                     .configureRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
                     .setType(MotorTypes.DRIVE)
-                    .configurePIDF(0.0, 0.0, 0.0, 0.0)
+                    .configurePIDF(.6, 0.0, 0.0, 0.0)
     ),
     DRIVE_BACK_RIGHT(
             new Motor("cm0")
@@ -72,28 +72,28 @@ public enum RobotConfiguration {
                     .configureZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE)
                     .configureRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
                     .setType(MotorTypes.DRIVE)
-                    .configurePIDF(0.0, 0.0, 0.0, 0.0)
+                    .configurePIDF(.6, 0.0, 0.0, 0.0)
     ),
 
     // Absolute encoders configuration
     ABSOLUTE_FRONT_LEFT(
             new AbsoluteEncoder("ca2")
-                    .zero(354.6)
+                    .zero(351)
                     .setInverted(false)
     ),
     ABSOLUTE_FRONT_RIGHT(
             new AbsoluteEncoder("ca0")
-                    .zero(108.3)
+                    .zero(110.9)
                     .setInverted(false)
     ),
     ABSOLUTE_BACK_LEFT(
             new AbsoluteEncoder("ca3")
-                    .zero(80.1)
+                    .zero(79.9)
                     .setInverted(false)
     ),
     ABSOLUTE_BACK_RIGHT(
             new AbsoluteEncoder("ca1")
-                    .zero(22.4)
+                    .zero(18.5)
                     .setInverted(false)
     ),
 
@@ -103,8 +103,8 @@ public enum RobotConfiguration {
                     .configureDirection(DcMotorSimple.Direction.FORWARD)
                     .configurePIDWrapping()
                     .configurePWMRange(AXON_CONTINUOUS_PWM)
-                    .configurePIDF(0.0009, 0.0, 0.0)
-                    .configureFF(0.072)
+                        .configurePIDF(0.007, 0.0, 0.0000)
+                    .configureFF(0.03)
                     .configureEncoder(ABSOLUTE_FRONT_LEFT.getAsAbsoluteEncoder())
     ),
     ANGLE_FRONT_RIGHT(
@@ -112,8 +112,8 @@ public enum RobotConfiguration {
                     .configureDirection(DcMotorSimple.Direction.FORWARD)
                     .configurePIDWrapping()
                     .configurePWMRange(AXON_CONTINUOUS_PWM)
-                    .configurePIDF(0.002, 0.0, 0.0)
-                    .configureFF(0.067)
+                    .configurePIDF(0.006, 0.0, 0.0000)
+                    .configureFF(0.03)
                     .configureEncoder(ABSOLUTE_FRONT_RIGHT.getAsAbsoluteEncoder())
     ),
     ANGLE_BACK_LEFT(
@@ -121,8 +121,8 @@ public enum RobotConfiguration {
                     .configureDirection(DcMotorSimple.Direction.FORWARD)
                     .configurePIDWrapping()
                     .configurePWMRange(AXON_CONTINUOUS_PWM)
-                    .configurePIDF(0.01, 0.0, 0.0)
-                    .configureFF(0.07)
+                    .configurePIDF(0.006, 0.0, 0.0000)
+                    .configureFF(0.03)
                     .configureEncoder(ABSOLUTE_BACK_LEFT.getAsAbsoluteEncoder())
     ),
     ANGLE_BACK_RIGHT(
@@ -130,8 +130,8 @@ public enum RobotConfiguration {
                     .configureDirection(DcMotorSimple.Direction.FORWARD)
                     .configurePIDWrapping()
                     .configurePWMRange(AXON_CONTINUOUS_PWM)
-                    .configurePIDF(0.001, 0.0, 0.0)
-                    .configureFF(0.055)
+                    .configurePIDF(0.006, 0.0, 0.00000)
+                    .configureFF(0.03)
                     .configureEncoder(ABSOLUTE_BACK_RIGHT.getAsAbsoluteEncoder())
     ),
 
