@@ -79,7 +79,14 @@ public class SwerveDrive {
     /**
      * Swerve IMU device for sensing the heading of the robot.
      */
+
+    private double voltage = 0.0;
+
+    public static boolean maintainHeading = false;
+
     private final IMU imu;
+
+    public static double imuOffset = 0.0;
     /**
      * The last heading set in radians.
      */
@@ -719,5 +726,9 @@ public class SwerveDrive {
 
     public List<Pose2d> getPoseHistory() {
         return poseHistory;
+    }
+
+    public double getVoltage() {
+        return voltage;
     }
 }

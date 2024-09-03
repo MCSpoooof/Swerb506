@@ -5,16 +5,22 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Swerb506.core.RobotHardware;
 import org.firstinspires.ftc.teamcode.Swerb506.swerve.SwerveDrive;
 import org.firstinspires.ftc.teamcode.Swerb506.utility.autonomous.Executive;
+import org.firstinspires.ftc.teamcode.Swerb506.utility.math.controller.PIDController;
 import org.firstinspires.ftc.teamcode.Swerb506.utility.math.geometry.Pose2d;
 import org.firstinspires.ftc.teamcode.Swerb506.utility.math.geometry.Translation2d;
+import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.normalizeRadians;
 
 @Config
 @TeleOp(name = "TelePOP")
 public class TelePOP extends RobotHardware {
+    public SwerveDrive swerveDrive;
     public static boolean fieldRelative = true;
-    public static boolean headingCorrection = false;
     public boolean slowMode = false;
     public double speed;
+    public final PIDController headingController = new PIDController (0.5,0,0.1);
+    public boolean lockHeading = false;
+    public double targetHeading;
+
     private final Executive.StateMachine<TelePOP> stateMachine;
 
     public TelePOP() {
@@ -54,20 +60,42 @@ public class TelePOP extends RobotHardware {
         @Override
         public void update() {
             super.update();
-            // Control logic for resetting gyro and odometry
-            if (primary.YOnce()) {
+
+            if (gamepad1.right_stick_button) {
                 swerveDrive.zeroGyro();
                 swerveDrive.resetOdometry(new Pose2d());
             }
 
+            if (gamepad1.right_stick_y > 0.25) {
+                lockHeading = true;
+                targetHeading = Math.PI + swerveDrive.imuOffset;
+            }
+            if (gamepad1.right_stick_y < -0.25) {
+                lockHeading = true;
+                targetHeading = 0 + swerveDrive.imuOffset;
+            }
+
+            double turn = gamepad1.left_trigger - gamepad1.right_trigger;
+
+            if (Math.abs(turn) > 0.002) {
+                lockHeading = false;
+            }
+
+            double error = normalizeRadians(normalizeRadians(targetHeading)-normalizeRadians(swerveDrive.getYaw().getDegrees()));
+            double headingCorrection = -headingController.calculate(0, error) * 12.4 / swerveDrive.getVoltage();
+
+            if (Math.abs(headingCorrection) < 0.01) {
+                headingCorrection = 0;
+            }
+
+            swerveDrive.maintainHeading = (Math.abs(gamepad1.left_stick_x)) < 0.002
+                    && Math.abs(gamepad1.left_stick_y) < 0.002
+                    && Math.abs(turn) < 0.002
+                    && Math.abs(headingCorrection) < 0.02;
+
             // Toggle field-relative mode
             if (primary.BOnce()) {
                 fieldRelative = !fieldRelative;
-            }
-
-            // Toggle heading correction
-            if (primary.XOnce()) {
-                headingCorrection = !headingCorrection;
             }
 
             // Set fixed heading for the robot
@@ -95,7 +123,7 @@ public class TelePOP extends RobotHardware {
             double thetaV = (Math.pow(-primary.right_stick_x, 3) * swerveControllerConfiguration.maxAngularVelocity) * speed;
 
             // Drive the robot
-            swerveDrive.drive(new Translation2d(xV, yV), thetaV, fieldRelative, true, headingCorrection);
+            swerveDrive.drive(new Translation2d(xV, yV), thetaV, fieldRelative, true);
             swerveDrive.updateOdometry();
 
             // Telemetry updates
