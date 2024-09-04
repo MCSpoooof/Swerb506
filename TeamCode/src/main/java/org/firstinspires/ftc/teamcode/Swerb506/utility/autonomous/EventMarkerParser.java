@@ -1,8 +1,7 @@
 package org.firstinspires.ftc.teamcode.Swerb506.utility.autonomous;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
+import org.firstinspires.ftc.teamcode.Swerb506.opmode.autonomous.Events;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -21,66 +20,59 @@ public class EventMarkerParser {
         List<EventMarker> eventMarkers = new ArrayList<>();
 
         try {
-            // Use AppUtil to get the file in the settings directory
+            // use AppUtil to get the file from the settings directory
             File file = AppUtil.getInstance().getSettingsFile(fileName + ".path");
-
-            if (!file.exists()) {
-                telemetry.addLine("File not found: " + file.getAbsolutePath());
-                telemetry.update();
+            StringBuilder dataBuilder = new StringBuilder(); // this will build each line
+            if (!file.exists()) { // kill the program if file is DNE
+                System.err.println("File not found: " + file.getAbsolutePath());
                 return eventMarkers;
             }
 
-            // Open the file
+            // read through file and build
             try (InputStream inputStream = new FileInputStream(file);
-                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-
-                StringBuilder fileContentBuilder = new StringBuilder();
+                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream)))
+            {
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    fileContentBuilder.append(line);
+                    dataBuilder.append(line); // add each line to builder (more efficient concatenation)
                 }
+            } // parse data (as a String) into a JSONObject
+            JSONObject fileContent = (JSONObject) new JSONParser().parse(dataBuilder.toString());
 
-                String fileContent = fileContentBuilder.toString();
-                JSONObject json = (JSONObject) new JSONParser().parse(fileContent);
-
-                JSONArray markersJson = (JSONArray) json.get("eventMarkers");
-                for (Object markerJson : markersJson) {
-                    EventMarker marker = fromJson((JSONObject) markerJson);
-                    if (marker != null) {
-                        eventMarkers.add(marker);
-                    }
+            // find the JSONArray of eventMarkers
+            JSONArray markersJson = (JSONArray) fileContent.get("eventMarkers");
+            for (Object markerJson : markersJson) { // loop through said array to find each marker
+                EventMarker marker = createMarker((JSONObject) markerJson);
+                if (marker != null) {
+                    eventMarkers.add(marker);
                 }
-
-            } catch (Exception e) {
-                telemetry.addLine("Error reading or parsing file: " + e.getMessage());
-                telemetry.update();
-                e.printStackTrace();
             }
 
         } catch (Exception e) {
-            telemetry.addLine("Error accessing file: " + e.getMessage());
-            telemetry.update();
-            e.printStackTrace();
-        }
+            System.err.println("Error parsing file: " + e.getMessage());
+            e.printStackTrace();        }
 
         return eventMarkers;
     }
 
-    // Create an EventMarker object from JSON.
-    public EventMarker fromJson(JSONObject json) {
+    // create an EventMarker object from JSON.
+    public EventMarker createMarker(JSONObject json) {
         try {
-            double relativePosition = ((Number) json.get("relativePosition")).doubleValue();
+            // get the pose and name, cast them to Java types
+            double relativePosition = (Double) json.get("relativePosition");
             String name = (String) json.get("name");
-            Runnable action = null;
 
-            // Assuming you have a way to map action names to Runnable instances.
-            // Placeholder for action mapping logic:
-            // action = ActionRegistry.getAction(name);
-
+            // access the method (runnable) from Events based on "name"
+            Runnable action = () -> {
+                try {
+                    Events.class.getMethod(name).invoke(null);
+                } catch (Exception e) {
+                    throw new RuntimeException("Failed to invoke" + name + "from Events: ", e);
+                }
+            };
             return new EventMarker(relativePosition, action, name);
         } catch (Exception e) {
-            telemetry.addLine("Error parsing EventMarker from JSON: " + e.getMessage());
-            telemetry.update();
+            System.err.println("Error creating EventMarker from JSON: " + e.getMessage());
             e.printStackTrace();
             return null;
         }

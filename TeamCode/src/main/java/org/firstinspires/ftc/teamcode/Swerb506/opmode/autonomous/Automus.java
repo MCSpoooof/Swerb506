@@ -33,10 +33,9 @@ public class Automus extends RobotHardware {
     private boolean hasRun = false;
     private boolean finishedDriving = false;
     private ElapsedTimer elapsedTimer = new ElapsedTimer();
-    private List<Double> eventTriggerTimes = new ArrayList<>();
     private double lastEventTime = -1;
 
-    private boolean useManualEventMarkers = true; // Set to true to use manual event markers
+    private boolean useManualEventMarkers = true; // Variable to control manual event markers
 
     @Override
     public void init() {
@@ -58,40 +57,35 @@ public class Automus extends RobotHardware {
         output = swerveDrive::drive;
 
         if (useManualEventMarkers) {
-            // Define manual event markers with actions
-            telemetry.addLine("Using manual event markers.");
+            // Use manual event markers
+            System.out.println("Using manual event markers.");
             eventMarkers.clear(); // Clear any loaded markers
-            eventMarkers.add(new EventMarker(0.15, this::handleSwerve1, "swerve1"));
-            eventMarkers.add(new EventMarker(1.0, this::handleEvent2, "event2"));
+            // Add manual event markers with actions from Events
+            eventMarkers.add(new EventMarker(0.15, Events::swerve1, "swerve1"));
+            eventMarkers.add(new EventMarker(1.0, Events::event2, "event2"));
         } else {
             // Load event markers from path file
             try {
                 EventMarkerParser parser = new EventMarkerParser();
                 eventMarkers = parser.parseEventMarkersFromPath("Auto"); // Use the correct file name without extension
                 if (eventMarkers.isEmpty()) {
-                    telemetry.addLine("No event markers found in path file.");
+                    System.out.println("No event markers found in path file.");
                 } else {
-                    telemetry.addLine("Event markers loaded: " + eventMarkers.size());
+                    System.out.println("Event markers loaded: " + eventMarkers.size());
                 }
             } catch (Exception e) {
-                telemetry.addLine("Error loading event markers from path file: " + e.getMessage());
+                System.out.println("Error loading event markers from path file: " + e.getMessage());
                 e.printStackTrace();
                 eventMarkers.clear(); // Ensure list is empty if loading fails
             }
         }
 
-        // Filter and store trigger times for target events
-        eventTriggerTimes.clear();
-        for (EventMarker marker : eventMarkers) {
-            eventTriggerTimes.add(marker.getRelativePosition());
-        }
-
         try {
             path = PathPlannerPath.fromPathFile("Auto"); // Use the correct file name without extension
             trajectory = new PathPlannerTrajectory(path, speedsSupplier.get());
-            telemetry.addLine("Path and trajectory initialized.");
+            System.out.println("Path and trajectory initialized.");
         } catch (Exception e) {
-            telemetry.addLine("Error initializing path or trajectory: " + e.getMessage());
+            System.out.println("Error initializing path or trajectory: " + e.getMessage());
             e.printStackTrace();
         }
 
@@ -117,14 +111,11 @@ public class Automus extends RobotHardware {
         PathPlannerTrajectory.State targetState = trajectory.sample(currentTime);
 
         // Handle events
-        for (Double triggerTime : eventTriggerTimes) {
-            if (Math.abs(currentTime - triggerTime) < 0.1 && lastEventTime < triggerTime) {
-                for (EventMarker marker : eventMarkers) {
-                    if (Math.abs(marker.getRelativePosition() - triggerTime) < 0.1) {
-                        marker.execute(); // Use the execute method of EventMarker
-                    }
-                }
-                lastEventTime = triggerTime;
+        for (EventMarker m : eventMarkers){
+            double trigger = m.getRelativePosition();
+            if (Math.abs(currentTime - trigger) < 0.1 && trigger > lastEventTime) { // search for the trigger time that is near the current time
+                m.execute(); // execute runnable
+                lastEventTime = trigger;
             }
         }
 
@@ -136,20 +127,7 @@ public class Automus extends RobotHardware {
         if (currentTime > trajectory.getTotalTimeSeconds()) {
             finishedDriving = true;
             output.accept(new ChassisSpeeds(0, 0, 0));
-            telemetry.addLine("Finished driving, stopping robot.");
+            System.out.println("Finished driving, stopping robot.");
         }
-    }
-
-    // Define the actions for the events
-    private void handleSwerve1() {
-        telemetry.addLine("Handling event 1 (swerve1)");
-        telemetry.update();
-        // Your code for Event 1
-    }
-
-    private void handleEvent2() {
-        telemetry.addLine("Handling event 2 (event2)");
-        telemetry.update();
-        // Your code for Event 2
     }
 }

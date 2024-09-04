@@ -134,6 +134,9 @@ public enum RobotConfiguration {
                     .configureFF(0.03)
                     .configureEncoder(ABSOLUTE_BACK_RIGHT.getAsAbsoluteEncoder())
     ),
+    TEST_SERVO(
+            new Servo("cs5")
+    ),
 
     // Encoders for odometry configuration
     ODOMETRY_PARALLEL(
