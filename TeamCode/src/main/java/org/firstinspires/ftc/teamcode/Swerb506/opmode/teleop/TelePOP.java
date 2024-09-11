@@ -13,7 +13,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.norm
 @Config
 @TeleOp(name = "TelePOP")
 public class TelePOP extends RobotHardware {
-    public SwerveDrive swerveDrive;
+    //public SwerveDrive swerveDrive;
     public static boolean fieldRelative = true;
     public boolean slowMode = false;
     public double speed;
@@ -92,6 +92,14 @@ public class TelePOP extends RobotHardware {
                     && Math.abs(gamepad1.left_stick_y) < 0.002
                     && Math.abs(turn) < 0.002
                     && Math.abs(headingCorrection) < 0.02;
+
+            double rotationAmount = swerveDrive.getYaw().getDegrees() - swerveDrive.imuOffset;
+            Pose2d drive = new Pose2d(
+                    new Translation2d(joyScalar(gamepad1.left_stick_y, 0.001),
+                            joystickScalar(gamepad1.left_stick_x, 0.001)).rotate(rotationAmount),
+                    lockHeading ? headingCorrection :
+                            joystickScalar(turn, 0.01)
+            );
 
             // Toggle field-relative mode
             if (primary.BOnce()) {
